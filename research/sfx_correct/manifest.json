@@ -1,0 +1,1802 @@
+{
+ "format": "mono 16-bit PCM, native wave rate; pitch/bend baked into waveform (resampled), gain baked incl. common_scale",
+ "common_scale": 0.5245652173913044,
+ "effects": {
+  "SE_PNG_BALL_HIT_NORMAL": {
+   "file": "wav/SE_PNG_BALL_HIT_NORMAL.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 10,
+     "key": 48,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 48,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 120,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7106,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.6917,
+     "gain_in_file": 0.3628
+    },
+    {
+     "src": "bank",
+     "wave": 10,
+     "key": 48,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 48,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 120,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7106,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.6917,
+     "gain_in_file": 0.3628
+    }
+   ],
+   "duration_s": 0.2129,
+   "spectral_centroid_hz": 4035,
+   "t_above_-40dB_s": 0.1455,
+   "peak": 0.726,
+   "in_game_random": [
+    {
+     "param": "track volume c1",
+     "lo": 110,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_HIT_DRIVE": {
+   "file": "wav/SE_PNG_BALL_HIT_DRIVE.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 13,
+     "key": 60,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 127,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7106,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.7321,
+     "gain_in_file": 0.384
+    },
+    {
+     "src": "bank",
+     "wave": 13,
+     "key": 60,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 127,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7106,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.7321,
+     "gain_in_file": 0.384
+    }
+   ],
+   "duration_s": 0.2164,
+   "spectral_centroid_hz": 4529,
+   "t_above_-40dB_s": 0.1542,
+   "peak": 0.768,
+   "in_game_random": [
+    {
+     "param": "track volume c1",
+     "lo": 110,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_HIT_CUT": {
+   "file": "wav/SE_PNG_BALL_HIT_CUT.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 13,
+     "key": 60,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 64,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 127,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7106,
+     "playback_rate_ratio": 1.05995,
+     "gain_rel": 0.7321,
+     "gain_in_file": 0.384
+    },
+    {
+     "src": "bank",
+     "wave": 13,
+     "key": 60,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 64,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 127,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7106,
+     "playback_rate_ratio": 1.05995,
+     "gain_rel": 0.7321,
+     "gain_in_file": 0.384
+    }
+   ],
+   "duration_s": 0.2013,
+   "spectral_centroid_hz": 4446,
+   "t_above_-40dB_s": 0.1409,
+   "peak": 0.835,
+   "in_game_random": [
+    {
+     "param": "track volume c1",
+     "lo": 110,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_HIT_SMASH": {
+   "file": "wav/SE_PNG_BALL_HIT_SMASH.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 16,
+     "key": 72,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 72,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 127,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7376,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.8928,
+     "gain_in_file": 0.4683
+    },
+    {
+     "src": "bank",
+     "wave": 16,
+     "key": 72,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 72,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 127,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7376,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.8928,
+     "gain_in_file": 0.4683
+    }
+   ],
+   "duration_s": 0.2305,
+   "spectral_centroid_hz": 3919,
+   "t_above_-40dB_s": 0.2126,
+   "peak": 0.937,
+   "in_game_random": [
+    {
+     "param": "pitch bend s8, x2/127 semitones (c4)",
+     "lo": -64,
+     "hi": 64
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 0
+    }
+   ]
+  },
+  "SE_PNG_BALL_HIT_NORMAL_CSPK": {
+   "file": "wav/SE_PNG_BALL_HIT_NORMAL_CSPK.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 10,
+     "key": 48,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 48,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 120,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7106,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.6917,
+     "gain_in_file": 0.3628
+    },
+    {
+     "src": "bank",
+     "wave": 10,
+     "key": 48,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 48,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 120,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7106,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.6917,
+     "gain_in_file": 0.3628
+    }
+   ],
+   "duration_s": 0.2129,
+   "spectral_centroid_hz": 4035,
+   "t_above_-40dB_s": 0.1455,
+   "peak": 0.726,
+   "in_game_random": [
+    {
+     "param": "track volume c1",
+     "lo": 110,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_HIT_DRIVE_CSPK": {
+   "file": "wav/SE_PNG_BALL_HIT_DRIVE_CSPK.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 13,
+     "key": 60,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 127,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7106,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.7321,
+     "gain_in_file": 0.384
+    },
+    {
+     "src": "bank",
+     "wave": 13,
+     "key": 60,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 127,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7106,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.7321,
+     "gain_in_file": 0.384
+    }
+   ],
+   "duration_s": 0.2164,
+   "spectral_centroid_hz": 4529,
+   "t_above_-40dB_s": 0.1542,
+   "peak": 0.768,
+   "in_game_random": [
+    {
+     "param": "track volume c1",
+     "lo": 110,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_HIT_CUT_CSPK": {
+   "file": "wav/SE_PNG_BALL_HIT_CUT_CSPK.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 13,
+     "key": 60,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 64,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 127,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7106,
+     "playback_rate_ratio": 1.05995,
+     "gain_rel": 0.7321,
+     "gain_in_file": 0.384
+    },
+    {
+     "src": "bank",
+     "wave": 13,
+     "key": 60,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 64,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 127,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7106,
+     "playback_rate_ratio": 1.05995,
+     "gain_rel": 0.7321,
+     "gain_in_file": 0.384
+    }
+   ],
+   "duration_s": 0.2013,
+   "spectral_centroid_hz": 4446,
+   "t_above_-40dB_s": 0.1409,
+   "peak": 0.835,
+   "in_game_random": [
+    {
+     "param": "track volume c1",
+     "lo": 110,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_HIT_SMASH_CSPK": {
+   "file": "wav/SE_PNG_BALL_HIT_SMASH_CSPK.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 16,
+     "key": 72,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 72,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 127,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7376,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.8928,
+     "gain_in_file": 0.4683
+    },
+    {
+     "src": "bank",
+     "wave": 16,
+     "key": 72,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 72,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 127,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7376,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.8928,
+     "gain_in_file": 0.4683
+    }
+   ],
+   "duration_s": 0.2305,
+   "spectral_centroid_hz": 3919,
+   "t_above_-40dB_s": 0.2126,
+   "peak": 0.937,
+   "in_game_random": [
+    {
+     "param": "pitch bend s8, x2/127 semitones (c4)",
+     "lo": -64,
+     "hi": 64
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 0
+    }
+   ]
+  },
+  "SE_PNG_BALL_HIT_NORMAL_SLIPPER": {
+   "file": "wav/SE_PNG_BALL_HIT_NORMAL_SLIPPER.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 22,
+     "key": 48,
+     "prog": 26,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 48,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 110,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7338,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.7102,
+     "gain_in_file": 0.3725
+    },
+    {
+     "src": "bank",
+     "wave": 22,
+     "key": 48,
+     "prog": 26,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 48,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 110,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7338,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.7102,
+     "gain_in_file": 0.3725
+    }
+   ],
+   "duration_s": 0.1706,
+   "spectral_centroid_hz": 3576,
+   "t_above_-40dB_s": 0.0761,
+   "peak": 0.745,
+   "in_game_random": [
+    {
+     "param": "track volume c1",
+     "lo": 110,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_HIT_DRIVE_SLIPPER": {
+   "file": "wav/SE_PNG_BALL_HIT_DRIVE_SLIPPER.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 25,
+     "key": 60,
+     "prog": 26,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 110,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 3843,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.7102,
+     "gain_in_file": 0.3725
+    },
+    {
+     "src": "bank",
+     "wave": 25,
+     "key": 60,
+     "prog": 26,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 110,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 3843,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.7102,
+     "gain_in_file": 0.3725
+    }
+   ],
+   "duration_s": 0.106,
+   "spectral_centroid_hz": 3631,
+   "t_above_-40dB_s": 0.0431,
+   "peak": 0.745,
+   "in_game_random": [
+    {
+     "param": "track volume c1",
+     "lo": 110,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_HIT_CUT_SLIPPER": {
+   "file": "wav/SE_PNG_BALL_HIT_CUT_SLIPPER.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 25,
+     "key": 60,
+     "prog": 26,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 64,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 110,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 3843,
+     "playback_rate_ratio": 1.05995,
+     "gain_rel": 0.7102,
+     "gain_in_file": 0.3725
+    },
+    {
+     "src": "bank",
+     "wave": 25,
+     "key": 60,
+     "prog": 26,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 64,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 110,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 3843,
+     "playback_rate_ratio": 1.05995,
+     "gain_rel": 0.7102,
+     "gain_in_file": 0.3725
+    }
+   ],
+   "duration_s": 0.1003,
+   "spectral_centroid_hz": 3616,
+   "t_above_-40dB_s": 0.0407,
+   "peak": 0.745,
+   "in_game_random": [
+    {
+     "param": "track volume c1",
+     "lo": 110,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_HIT_SMASH_SLIPPER": {
+   "file": "wav/SE_PNG_BALL_HIT_SMASH_SLIPPER.wav",
+   "sample_rate": 28000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 28,
+     "key": 74,
+     "prog": 26,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 72,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 105,
+     "release": 90,
+     "native_rate": 28000,
+     "native_len": 7536,
+     "playback_rate_ratio": 1.12246,
+     "gain_rel": 0.8268,
+     "gain_in_file": 0.4337
+    },
+    {
+     "src": "bank",
+     "wave": 28,
+     "key": 74,
+     "prog": 26,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 72,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 105,
+     "release": 90,
+     "native_rate": 28000,
+     "native_len": 7536,
+     "playback_rate_ratio": 1.12246,
+     "gain_rel": 0.8268,
+     "gain_in_file": 0.4337
+    }
+   ],
+   "duration_s": 0.2254,
+   "spectral_centroid_hz": 2827,
+   "t_above_-40dB_s": 0.1804,
+   "peak": 0.887,
+   "in_game_random": [
+    {
+     "param": "pitch bend s8, x2/127 semitones (c4)",
+     "lo": -64,
+     "hi": 64
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 0
+    }
+   ]
+  },
+  "SE_PNG_BALL_HIT_NORMAL_SLIPPER_CSPK": {
+   "file": "wav/SE_PNG_BALL_HIT_NORMAL_SLIPPER_CSPK.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 22,
+     "key": 48,
+     "prog": 26,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 48,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 110,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7338,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.7102,
+     "gain_in_file": 0.3725
+    },
+    {
+     "src": "bank",
+     "wave": 22,
+     "key": 48,
+     "prog": 26,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 48,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 110,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 7338,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.7102,
+     "gain_in_file": 0.3725
+    }
+   ],
+   "duration_s": 0.1706,
+   "spectral_centroid_hz": 3576,
+   "t_above_-40dB_s": 0.0761,
+   "peak": 0.745,
+   "in_game_random": [
+    {
+     "param": "track volume c1",
+     "lo": 110,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_HIT_DRIVE_SLIPPER_CSPK": {
+   "file": "wav/SE_PNG_BALL_HIT_DRIVE_SLIPPER_CSPK.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 25,
+     "key": 60,
+     "prog": 26,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 110,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 3843,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.7102,
+     "gain_in_file": 0.3725
+    },
+    {
+     "src": "bank",
+     "wave": 25,
+     "key": 60,
+     "prog": 26,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 110,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 3843,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.7102,
+     "gain_in_file": 0.3725
+    }
+   ],
+   "duration_s": 0.106,
+   "spectral_centroid_hz": 3631,
+   "t_above_-40dB_s": 0.0431,
+   "peak": 0.745,
+   "in_game_random": [
+    {
+     "param": "track volume c1",
+     "lo": 110,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_HIT_CUT_SLIPPER_CSPK": {
+   "file": "wav/SE_PNG_BALL_HIT_CUT_SLIPPER_CSPK.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 25,
+     "key": 60,
+     "prog": 26,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 64,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 110,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 3843,
+     "playback_rate_ratio": 1.05995,
+     "gain_rel": 0.7102,
+     "gain_in_file": 0.3725
+    },
+    {
+     "src": "bank",
+     "wave": 25,
+     "key": 60,
+     "prog": 26,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 64,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 110,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 3843,
+     "playback_rate_ratio": 1.05995,
+     "gain_rel": 0.7102,
+     "gain_in_file": 0.3725
+    }
+   ],
+   "duration_s": 0.1003,
+   "spectral_centroid_hz": 3616,
+   "t_above_-40dB_s": 0.0407,
+   "peak": 0.745,
+   "in_game_random": [
+    {
+     "param": "track volume c1",
+     "lo": 110,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_HIT_SMASH_SLIPPER_CSPK": {
+   "file": "wav/SE_PNG_BALL_HIT_SMASH_SLIPPER_CSPK.wav",
+   "sample_rate": 28000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 28,
+     "key": 74,
+     "prog": 26,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 72,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 105,
+     "release": 90,
+     "native_rate": 28000,
+     "native_len": 7536,
+     "playback_rate_ratio": 1.12246,
+     "gain_rel": 0.8268,
+     "gain_in_file": 0.4337
+    },
+    {
+     "src": "bank",
+     "wave": 28,
+     "key": 74,
+     "prog": 26,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 72,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 105,
+     "release": 90,
+     "native_rate": 28000,
+     "native_len": 7536,
+     "playback_rate_ratio": 1.12246,
+     "gain_rel": 0.8268,
+     "gain_in_file": 0.4337
+    }
+   ],
+   "duration_s": 0.2254,
+   "spectral_centroid_hz": 2827,
+   "t_above_-40dB_s": 0.1804,
+   "peak": 0.887,
+   "in_game_random": [
+    {
+     "param": "pitch bend s8, x2/127 semitones (c4)",
+     "lo": -64,
+     "hi": 64
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 0
+    }
+   ]
+  },
+  "SE_PNG_BALL_HIT_FACE": {
+   "file": "wav/SE_PNG_BALL_HIT_FACE.wav",
+   "sample_rate": 22050,
+   "voices": [
+    {
+     "src": "rwsd",
+     "wave": 8,
+     "start_s": 0.0,
+     "sound_vol": 90,
+     "note_vol": 127,
+     "rwsd_pitch": 1.0,
+     "native_rate": 22050,
+     "native_len": 3456,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.7087,
+     "gain_in_file": 0.3717
+    }
+   ],
+   "duration_s": 0.1567,
+   "spectral_centroid_hz": 4163,
+   "t_above_-40dB_s": 0.1384,
+   "peak": 0.372
+  },
+  "SE_PNG_BALL_BOUND_NORMAL": {
+   "file": "wav/SE_PNG_BALL_BOUND_NORMAL.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 4,
+     "key": 24,
+     "prog": 0,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 24,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 115,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 5728,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.9055,
+     "gain_in_file": 0.475
+    },
+    {
+     "src": "bank",
+     "wave": 4,
+     "key": 24,
+     "prog": 0,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 24,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 115,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 5728,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.9055,
+     "gain_in_file": 0.475
+    }
+   ],
+   "duration_s": 0.179,
+   "spectral_centroid_hz": 3686,
+   "t_above_-40dB_s": 0.1643,
+   "peak": 0.95,
+   "in_game_random": [
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_BOUND_WOOD": {
+   "file": "wav/SE_PNG_BALL_BOUND_WOOD.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 4,
+     "key": 24,
+     "prog": 0,
+     "vel": 127,
+     "transpose": 0,
+     "bend": -32,
+     "orig_key": 24,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 110,
+     "sound_vol": 110,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 5728,
+     "playback_rate_ratio": 0.97131,
+     "gain_rel": 0.6498,
+     "gain_in_file": 0.3409
+    }
+   ],
+   "duration_s": 0.1842,
+   "spectral_centroid_hz": 3386,
+   "t_above_-40dB_s": 0.1691,
+   "peak": 0.363,
+   "in_game_random": [
+    {
+     "param": "track volume c1",
+     "lo": 100,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_BOUND_NET": {
+   "file": "wav/SE_PNG_BALL_BOUND_NET.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 18,
+     "key": 96,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 96,
+     "start_s": 0.0,
+     "inst_vol": 70,
+     "track_vol": 110,
+     "sound_vol": 80,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 6456,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.2325,
+     "gain_in_file": 0.122
+    }
+   ],
+   "duration_s": 0.1989,
+   "spectral_centroid_hz": 6158,
+   "t_above_-40dB_s": 0.1084,
+   "peak": 0.118,
+   "in_game_random": [
+    {
+     "param": "pitch bend s8, x2/127 semitones (c4)",
+     "lo": -64,
+     "hi": 64
+    },
+    {
+     "param": "track volume c1",
+     "lo": 100,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 0
+    }
+   ]
+  },
+  "SE_PNG_BALL_BOUND_SMASH": {
+   "file": "wav/SE_PNG_BALL_BOUND_SMASH.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 17,
+     "key": 84,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 84,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 100,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 5504,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.703,
+     "gain_in_file": 0.3688
+    },
+    {
+     "src": "bank",
+     "wave": 17,
+     "key": 84,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 84,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 100,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 5504,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.703,
+     "gain_in_file": 0.3688
+    }
+   ],
+   "duration_s": 0.1645,
+   "spectral_centroid_hz": 5325,
+   "t_above_-40dB_s": 0.1343,
+   "peak": 0.738,
+   "in_game_random": [
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 0
+    }
+   ]
+  },
+  "SE_PNG_BALL_BOUND_GROUND": {
+   "file": "wav/SE_PNG_BALL_BOUND_GROUND.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 7,
+     "key": 36,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 36,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 110,
+     "sound_vol": 120,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 6514,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.6329,
+     "gain_in_file": 0.332
+    }
+   ],
+   "duration_s": 0.1944,
+   "spectral_centroid_hz": 4720,
+   "t_above_-40dB_s": 0.0662,
+   "peak": 0.327,
+   "in_game_random": [
+    {
+     "param": "track volume c1",
+     "lo": 100,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_BOUND_MAT": {
+   "file": "wav/SE_PNG_BALL_BOUND_MAT.wav",
+   "sample_rate": 32000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 4,
+     "key": 24,
+     "prog": 0,
+     "vel": 127,
+     "transpose": 0,
+     "bend": -64,
+     "orig_key": 24,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 110,
+     "sound_vol": 110,
+     "release": 90,
+     "native_rate": 32000,
+     "native_len": 5728,
+     "playback_rate_ratio": 0.94345,
+     "gain_rel": 0.6498,
+     "gain_in_file": 0.3409
+    }
+   ],
+   "duration_s": 0.1897,
+   "spectral_centroid_hz": 3321,
+   "t_above_-40dB_s": 0.1741,
+   "peak": 0.369,
+   "in_game_random": [
+    {
+     "param": "track volume c1",
+     "lo": 100,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_BOUND_LAWN": {
+   "file": "wav/SE_PNG_BALL_BOUND_LAWN.wav",
+   "sample_rate": 28000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 19,
+     "key": 108,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 108,
+     "start_s": 0.0,
+     "inst_vol": 70,
+     "track_vol": 110,
+     "sound_vol": 40,
+     "release": 90,
+     "native_rate": 28000,
+     "native_len": 6896,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.1163,
+     "gain_in_file": 0.061
+    }
+   ],
+   "duration_s": 0.2456,
+   "spectral_centroid_hz": 7383,
+   "t_above_-40dB_s": 0.1825,
+   "peak": 0.059,
+   "in_game_random": [
+    {
+     "param": "pitch bend s8, x2/127 semitones (c4)",
+     "lo": -64,
+     "hi": 64
+    },
+    {
+     "param": "track volume c1",
+     "lo": 100,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_BALL_BOUND_WATER": {
+   "file": "wav/SE_PNG_BALL_BOUND_WATER.wav",
+   "sample_rate": 22050,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 0,
+     "key": 12,
+     "prog": 0,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 12,
+     "start_s": 0.0,
+     "inst_vol": 100,
+     "track_vol": 110,
+     "sound_vol": 40,
+     "release": 90,
+     "native_rate": 22050,
+     "native_len": 5092,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.1661,
+     "gain_in_file": 0.0871
+    }
+   ],
+   "duration_s": 0.2298,
+   "spectral_centroid_hz": 5232,
+   "t_above_-40dB_s": 0.1754,
+   "peak": 0.085,
+   "in_game_random": [
+    {
+     "param": "pitch bend s8, x2/127 semitones (c4)",
+     "lo": -64,
+     "hi": 64
+    },
+    {
+     "param": "track volume c1",
+     "lo": 100,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 3
+    }
+   ]
+  },
+  "SE_PNG_SWING_S": {
+   "file": "wav/SE_PNG_SWING_S.wav",
+   "sample_rate": 22050,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 40,
+     "key": 36,
+     "prog": 7,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 36,
+     "start_s": 0.0,
+     "inst_vol": 100,
+     "track_vol": 110,
+     "sound_vol": 90,
+     "release": 100,
+     "native_rate": 22050,
+     "native_len": 3824,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.3737,
+     "gain_in_file": 0.1961
+    }
+   ],
+   "duration_s": 0.1662,
+   "spectral_centroid_hz": 2156,
+   "t_above_-40dB_s": 0.083,
+   "peak": 0.196,
+   "in_game_random": [
+    {
+     "param": "pitch bend s8, x2/127 semitones (c4)",
+     "lo": -64,
+     "hi": 64
+    },
+    {
+     "param": "track volume c1",
+     "lo": 100,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 1
+    }
+   ]
+  },
+  "SE_PNG_SWING_L": {
+   "file": "wav/SE_PNG_SWING_L.wav",
+   "sample_rate": 22050,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 42,
+     "key": 60,
+     "prog": 7,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 90,
+     "track_vol": 110,
+     "sound_vol": 120,
+     "release": 100,
+     "native_rate": 22050,
+     "native_len": 3368,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.4485,
+     "gain_in_file": 0.2353
+    }
+   ],
+   "duration_s": 0.1437,
+   "spectral_centroid_hz": 2148,
+   "t_above_-40dB_s": 0.0909,
+   "peak": 0.235,
+   "in_game_random": [
+    {
+     "param": "pitch bend s8, x2/127 semitones (c4)",
+     "lo": -64,
+     "hi": 64
+    },
+    {
+     "param": "track volume c1",
+     "lo": 100,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 2
+    }
+   ]
+  },
+  "SE_PNG_SMASH_SHOT": {
+   "file": "wav/SE_PNG_SMASH_SHOT.wav",
+   "sample_rate": 28000,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 116,
+     "key": 36,
+     "prog": 21,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 36,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 127,
+     "release": 80,
+     "native_rate": 28000,
+     "native_len": 8310,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 1.0,
+     "gain_in_file": 0.5246
+    },
+    {
+     "src": "bank",
+     "wave": 117,
+     "key": 60,
+     "prog": 21,
+     "vel": 127,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 60,
+     "start_s": 0.0625,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 127,
+     "release": 80,
+     "native_rate": 22050,
+     "native_len": 7152,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 1.0,
+     "gain_in_file": 0.5246
+    }
+   ],
+   "duration_s": 0.3741,
+   "spectral_centroid_hz": 1832,
+   "t_above_-40dB_s": 0.2433,
+   "peak": 0.525,
+   "in_game_random": [
+    {
+     "param": "pitch bend s8, x2/127 semitones (c4)",
+     "lo": -64,
+     "hi": 64
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 0
+    }
+   ]
+  },
+  "SE_PNG_JUMP_SWING_L": {
+   "file": "wav/SE_PNG_JUMP_SWING_L.wav",
+   "sample_rate": 22050,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 45,
+     "key": 82,
+     "prog": 7,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 84,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 100,
+     "release": 100,
+     "native_rate": 22050,
+     "native_len": 7168,
+     "playback_rate_ratio": 0.8909,
+     "gain_rel": 0.5764,
+     "gain_in_file": 0.3024
+    },
+    {
+     "src": "bank",
+     "wave": 32,
+     "key": 60,
+     "prog": 8,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 60,
+     "start_s": 0.25,
+     "inst_vol": 127,
+     "track_vol": 115,
+     "sound_vol": 100,
+     "release": 100,
+     "native_rate": 28000,
+     "native_len": 17311,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.5764,
+     "gain_in_file": 0.3024
+    }
+   ],
+   "duration_s": 0.8647,
+   "spectral_centroid_hz": 4323,
+   "t_above_-40dB_s": 0.7682,
+   "peak": 0.299,
+   "in_game_random": [
+    {
+     "param": "pitch bend s8, x2/127 semitones (c4)",
+     "lo": -64,
+     "hi": 64
+    },
+    {
+     "param": "track volume c1",
+     "lo": 110,
+     "hi": 120
+    },
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 0
+    }
+   ]
+  },
+  "SE_PNG_THROW_UP": {
+   "file": "wav/SE_PNG_THROW_UP.wav",
+   "sample_rate": 28000,
+   "voices": [
+    {
+     "src": "rwsd",
+     "wave": 0,
+     "start_s": 0.0,
+     "sound_vol": 60,
+     "note_vol": 127,
+     "rwsd_pitch": 1.0,
+     "native_rate": 28000,
+     "native_len": 4928,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.4724,
+     "gain_in_file": 0.2478
+    }
+   ],
+   "duration_s": 0.176,
+   "spectral_centroid_hz": 3085,
+   "t_above_-40dB_s": 0.1685,
+   "peak": 0.248
+  },
+  "SE_PNG_THROW_UP_CSPK": {
+   "file": "wav/SE_PNG_THROW_UP_CSPK.wav",
+   "sample_rate": 28000,
+   "voices": [
+    {
+     "src": "rwsd",
+     "wave": 0,
+     "start_s": 0.0,
+     "sound_vol": 60,
+     "note_vol": 127,
+     "rwsd_pitch": 1.0,
+     "native_rate": 28000,
+     "native_len": 4928,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.4724,
+     "gain_in_file": 0.2478
+    }
+   ],
+   "duration_s": 0.176,
+   "spectral_centroid_hz": 3085,
+   "t_above_-40dB_s": 0.1685,
+   "peak": 0.248
+  },
+  "SE_PNG_WHISTLE_START": {
+   "file": "wav/SE_PNG_WHISTLE_START.wav",
+   "sample_rate": 22050,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 34,
+     "key": 60,
+     "prog": 3,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 60,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 127,
+     "release": 123,
+     "native_rate": 22050,
+     "native_len": 19264,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.8928,
+     "gain_in_file": 0.4683
+    }
+   ],
+   "duration_s": 0.8737,
+   "spectral_centroid_hz": 2863,
+   "t_above_-40dB_s": 0.8171,
+   "peak": 0.468,
+   "in_game_random": [
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 0
+    }
+   ]
+  },
+  "SE_PNG_WHISTLE_MISS": {
+   "file": "wav/SE_PNG_WHISTLE_MISS.wav",
+   "sample_rate": 22050,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 33,
+     "key": 36,
+     "prog": 3,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 36,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 127,
+     "release": 123,
+     "native_rate": 22050,
+     "native_len": 6176,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.8928,
+     "gain_in_file": 0.4683
+    }
+   ],
+   "duration_s": 0.2801,
+   "spectral_centroid_hz": 2874,
+   "t_above_-40dB_s": 0.209,
+   "peak": 0.468,
+   "in_game_random": [
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 0
+    }
+   ]
+  },
+  "SE_PNG_WHISTLE_END": {
+   "file": "wav/SE_PNG_WHISTLE_END.wav",
+   "sample_rate": 22050,
+   "voices": [
+    {
+     "src": "bank",
+     "wave": 33,
+     "key": 36,
+     "prog": 3,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 36,
+     "start_s": 0.0,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 127,
+     "release": 123,
+     "native_rate": 22050,
+     "native_len": 6176,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.8928,
+     "gain_in_file": 0.4683
+    },
+    {
+     "src": "bank",
+     "wave": 34,
+     "key": 60,
+     "prog": 3,
+     "vel": 120,
+     "transpose": 0,
+     "bend": 0,
+     "orig_key": 60,
+     "start_s": 0.33333,
+     "inst_vol": 127,
+     "track_vol": 127,
+     "sound_vol": 127,
+     "release": 123,
+     "native_rate": 22050,
+     "native_len": 19264,
+     "playback_rate_ratio": 1.0,
+     "gain_rel": 0.8928,
+     "gain_in_file": 0.4683
+    }
+   ],
+   "duration_s": 1.207,
+   "spectral_centroid_hz": 2798,
+   "t_above_-40dB_s": 1.1504,
+   "peak": 0.468,
+   "in_game_random": [
+    {
+     "param": "semitones (c3)",
+     "lo": 0,
+     "hi": 0
+    }
+   ]
+  }
+ }
+}

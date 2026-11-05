@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resort Table Tennis</title>
+<style>
+  :root { --ink:#10243a; --card:rgba(255,255,255,.94); --accent:#1d7fe0; --accent2:#ff8a3d; }
+  html,body { margin:0; height:100%; overflow:hidden; background:#8fc1e8; font-family: "Segoe UI", system-ui, sans-serif; color:var(--ink); }
+  canvas#view { position:fixed; inset:0; width:100%; height:100%; display:block; }
+  #score { position:fixed; top:14px; left:50%; transform:translateX(-50%); display:flex; gap:0; background:var(--card); border-radius:18px; box-shadow:0 6px 24px rgba(0,0,0,.25); overflow:hidden; font-weight:700; }
+  #score[hidden] { display:none; }
+  #score .side { padding:8px 22px; min-width:130px; text-align:center; }
+  #score .side small { display:block; font-size:12px; letter-spacing:.08em; text-transform:uppercase; opacity:.7; }
+  #score .side b { font-size:42px; line-height:1; }
+  #score .side.p0 { border-bottom:6px solid #e0463d; } #score .side.p1 { border-bottom:6px solid #2f6fe0; }
+  #score .side.serving small::after { content:" \25CF"; color:var(--accent2); }
+  #msg { position:fixed; top:112px; left:50%; transform:translateX(-50%); font-size:28px; font-weight:800; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.55); text-align:center; pointer-events:none; }
+  #dim { position:fixed; inset:0; background:#000; opacity:0; pointer-events:none; transition:opacity .25s; z-index:3; }
+  #dim.on { opacity:.55; }
+  #scored { position:fixed; left:0; right:0; top:50%; transform:translateY(-50%) scale(.6); text-align:center; z-index:4; pointer-events:none; opacity:0;
+    font-family: Impact, "Arial Black", "Haettenschweiler", sans-serif; font-weight:900; font-size:min(9vw,130px); white-space:nowrap; letter-spacing:.04em; text-transform:uppercase; color:#ffe14a;
+    -webkit-text-stroke: 7px #1a0f00; paint-order: stroke fill; text-shadow: 0 8px 0 #c1440e, 0 14px 0 #1a0f00, 0 22px 30px rgba(0,0,0,.6); }
+  #scored.show { animation: scoredPop 2.3s cubic-bezier(.2,1.4,.4,1) forwards; }
+  @keyframes scoredPop { 0% { opacity:0; transform:translateY(-50%) scale(.3) rotate(-4deg); } 12% { opacity:1; transform:translateY(-50%) scale(1.12) rotate(1.5deg); } 22% { transform:translateY(-50%) scale(1) rotate(0); } 85% { opacity:1; transform:translateY(-50%) scale(1); } 100% { opacity:0; transform:translateY(-50%) scale(1.06); } }
+  #rally { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); color:#fff; font-weight:700; text-shadow:0 2px 6px rgba(0,0,0,.5); font-size:20px; }
+  #lobby { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(16,36,58,.45); backdrop-filter: blur(3px); }
+  #lobby.hidden { display:none; }
+  .panel { background:var(--card); border-radius:24px; padding:28px 34px; box-shadow:0 14px 50px rgba(0,0,0,.35); display:flex; gap:32px; max-width:860px; }
+  .panel h1 { margin:0 0 4px; font-size:32px; } .panel p { margin:6px 0; line-height:1.4; }
+  #qrbox { text-align:center; } #qrbox img { width:230px; height:230px; border-radius:12px; border:1px solid #d6e0ea; }
+  #joinurl { font-size:12px; word-break:break-all; max-width:240px; margin-top:6px; opacity:.8; }
+  .badge { display:inline-block; font-size:12px; padding:2px 8px; border-radius:99px; background:#ffe2c9; color:#8a3d00; font-weight:700; }
+  .badge.ok { background:#d3f5dc; color:#12652e; }
+  .seat { display:flex; align-items:center; gap:10px; margin:8px 0; padding:10px 14px; border-radius:12px; background:#eef3f8; font-weight:600; }
+  .seat i { width:14px; height:14px; border-radius:50%; display:inline-block; } .seat span.k { margin-left:auto; font-weight:500; opacity:.75; }
+  button, select { font:inherit; font-weight:700; border-radius:12px; border:0; padding:10px 18px; cursor:pointer; }
+  button.primary { background:var(--accent); color:#fff; font-size:20px; padding:14px 26px; width:100%; margin-top:10px; }
+  button.ghost { background:#dfe9f3; color:var(--ink); } select { background:#dfe9f3; color:var(--ink); }
+  .row { display:flex; gap:10px; margin-top:10px; align-items:center; flex-wrap:wrap; }
+  #divider { position:fixed; top:0; bottom:0; left:50%; width:3px; margin-left:-1px; background:#fff; box-shadow:0 0 8px rgba(0,0,0,.5); display:none; pointer-events:none; }
+  #tilts.split { left:12px; right:12px; display:block; height:210px; }
+  #tilts.split .tile { position:absolute; bottom:0; } #tilts.split #tile0 { right:calc(50% + 8px); } #tilts.split #tile1 { right:0; }
+  #tilts { position:fixed; right:12px; bottom:12px; display:flex; gap:10px; pointer-events:none; }
+  .tile { width:190px; height:210px; border:2px solid rgba(255,255,255,.75); border-radius:14px; position:relative; box-shadow:0 4px 18px rgba(0,0,0,.35); display:none; }
+  .tile.on { display:block; } .tile b { position:absolute; left:8px; top:6px; color:#fff; font-size:13px; text-shadow:0 1px 3px #000; }
+  .tile i { position:absolute; left:0; right:0; bottom:5px; text-align:center; color:#cfe6ff; font-size:11px; font-style:normal; }
+  #help { position:fixed; left:12px; bottom:10px; text-align:left; font-size:12px; color:#fff; text-shadow:0 1px 4px rgba(0,0,0,.6); line-height:1.5; }
+  kbd { background:rgba(255,255,255,.85); color:#10243a; border-radius:4px; padding:0 5px; text-shadow:none; }
+  #loading { position:fixed; inset:0; background:#10243a; color:#fff; display:flex; align-items:center; justify-content:center; font-size:22px; z-index:9; }
+</style>
+</head>
+<body>
+<canvas id="view"></canvas>
+<div id="score" hidden>
+  <div class="side p0" id="s0"><small id="n0">Player 1</small><b id="v0">0</b></div>
+  <div class="side p1" id="s1"><small id="n1">Player 2</small><b id="v1">0</b></div>
+</div>
+<div id="divider"></div>
+<div id="dim"></div>
+<div id="scored"></div><div id="msg"></div>
+<div id="rally"></div>
+<div id="lobby">
+  <div class="panel">
+    <div id="qrbox">
+      <img id="qr" alt="QR code" width="230" height="230">
+      <div id="tunnel"><span class="badge" id="tbadge">starting tunnel...</span></div>
+      <div id="joinurl"></div>
+      <div id="hosturlbox" style="margin-top:10px;font-size:12px;max-width:240px;opacity:.9"><b>Watch/host from another PC:</b><br><a id="hosturl" href="#" style="word-break:break-all;color:#1d7fe0;cursor:pointer"></a><br><small id="hostcopied" style="opacity:.7">click to copy</small></div>
+    </div>
+    <div style="min-width:300px">
+      <h1>Resort Table Tennis</h1>
+      <p>Scan the code with your phone, tap <b>Join</b>, allow motion access, then hold the phone like a Wii Remote pointed at the screen and swing.</p>
+      <div id="seats"></div>
+      <div class="row">
+        <label>CPU level <select id="skill"><option value="0.3">Easy</option><option value="0.6" selected>Normal</option><option value="0.95">Hard</option></select></label>
+        <label>Match <select id="towin"><option value="11" selected>First to 11</option><option value="7">First to 7</option></select></label>
+      </div>
+      <button class="primary" id="start">Start match</button>
+      <div class="row"><button class="ghost" id="kbd">Play with mouse on this PC</button></div>
+    </div>
+  </div>
+</div>
+<div id="help">
+  <kbd>C</kbd> camera &nbsp; <kbd>V</kbd> split screen &nbsp; <kbd>M</kbd> mute &nbsp; <kbd>Esc</kbd> back to lobby<br>
+  <span id="kbdhelp" hidden>Mouse player: <kbd>Space</kbd> toss &nbsp; <kbd>Left click</kbd> forehand &nbsp; <kbd>Right click</kbd> backhand &nbsp; <kbd>Shift</kbd> hard &nbsp; mouse X aims</span>
+</div>
+<div id="tilts"><div class="tile" id="tile0"><b>P1 phone</b><i>screen toward you · green cone = TV</i></div><div class="tile" id="tile1"><b>P2 phone</b><i>screen toward you · green cone = TV</i></div></div>
+<div id="soundhint" style="position:fixed;top:12px;right:14px;background:#ffd24a;color:#3a2a00;font-weight:700;padding:8px 14px;border-radius:12px;font-size:14px;display:none;box-shadow:0 4px 14px rgba(0,0,0,.3)">Sound is off - click this page once to enable it</div>
+<div id="loading">Loading models...</div>
+<script type="importmap">{"imports":{"three":"/vendor/three/build/three.module.js","three/addons/":"/vendor/three/examples/jsm/"}}</script>
+<script type="module" src="/host.js"></script>
+</body>
+</html>

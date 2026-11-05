@@ -1,0 +1,258 @@
+80475bf8: d04100d0  stfs      f2, 0xd0(r1)
+80475bfc: d00100d4  stfs      f0, 0xd4(r1)
+80475c00: c3e212b0  lfs       f31, 0x12b0(r2) ; [806ff330] 00000000 f=0 i=0
+80475c04: fc1f0800  fcmpu     cr0, f31, f1
+80475c08: 4082000c  bne       0x80475c14
+80475c0c: c02da0fc  lfs       f1, -0x5f04(r13) ; [806f221c] 41f00000 f=30 i=1106247680
+80475c10: 48000058  b         0x80475c68
+80475c14: c02da0f8  lfs       f1, -0x5f08(r13) ; [806f2218] 42960000 f=75 i=1117126656
+80475c18: c3cda124  lfs       f30, -0x5edc(r13) ; [806f2244] 40000000 f=2 i=1073741824
+80475c1c: fc1f0800  fcmpu     cr0, f31, f1
+80475c20: 40820008  bne       0x80475c28
+80475c24: 48000014  b         0x80475c38
+80475c28: 4bcc5d89  bl        0x8013b9b0
+80475c2c: ec3e0072  fmuls     f1, f30, f1
+80475c30: 4bcc5ce1  bl        0x8013b910
+80475c34: ffe00890  fmr       f31, f1
+80475c38: c02212b0  lfs       f1, 0x12b0(r2) ; [806ff330] 00000000 f=0 i=0
+80475c3c: c3cda124  lfs       f30, -0x5edc(r13) ; [806f2244] 40000000 f=2 i=1073741824
+80475c40: fc01e800  fcmpu     cr0, f1, f29
+80475c44: 40820008  bne       0x80475c4c
+80475c48: 48000014  b         0x80475c5c
+80475c4c: fc20e890  fmr       f1, f29
+80475c50: 4bcc5d61  bl        0x8013b9b0
+80475c54: ec3e0072  fmuls     f1, f30, f1
+80475c58: 4bcc5cb9  bl        0x8013b910
+80475c5c: c00da0fc  lfs       f0, -0x5f04(r13) ; [806f221c] 41f00000 f=30 i=1106247680
+80475c60: ec0007f2  fmuls     f0, f0, f31
+80475c64: ec200824  fdivs     f1, f0, f1
+80475c68: c00da100  lfs       f0, -0x5f00(r13) ; [806f2220] 40a00000 f=5 i=1084227584
+80475c6c: fc010040  fcmpo     cr0, f1, f0
+80475c70: 4080000c  bge       0x80475c7c
+80475c74: fc200090  fmr       f1, f0
+80475c78: 48000014  b         0x80475c8c
+80475c7c: c00da0fc  lfs       f0, -0x5f04(r13) ; [806f221c] 41f00000 f=30 i=1106247680
+80475c80: fc010040  fcmpo     cr0, f1, f0
+80475c84: 40810008  ble       0x80475c8c
+80475c88: fc200090  fmr       f1, f0
+80475c8c: c05f003c  lfs       f2, 0x3c(r31)
+80475c90: 7fe3fb78  mr        r3, r31
+80475c94: c00da10c  lfs       f0, -0x5ef4(r13) ; [806f222c] 3dcccccd f=0.100000001 i=1036831949
+80475c98: 388100cc  addi      r4, r1, 0xcc
+80475c9c: ec211028  fsubs     f1, f1, f2
+80475ca0: 38bf0054  addi      r5, r31, 0x54
+80475ca4: 38c100b8  addi      r6, r1, 0xb8
+80475ca8: 38e100bc  addi      r7, r1, 0xbc
+80475cac: ec00107a  fmadds    f0, f0, f1, f2
+80475cb0: d01f003c  stfs      f0, 0x3c(r31)
+80475cb4: 4bfffa51  bl        0x80475704
+80475cb8: c06100b8  lfs       f3, 0xb8(r1)
+80475cbc: 38610058  addi      r3, r1, 0x58
+80475cc0: c03f0078  lfs       f1, 0x78(r31)
+80475cc4: c04100bc  lfs       f2, 0xbc(r1)
+80475cc8: c01f007c  lfs       f0, 0x7c(r31)
+80475ccc: ec230828  fsubs     f1, f3, f1
+80475cd0: ec420028  fsubs     f2, f2, f0
+80475cd4: 4bdd6aad  bl        0x8024c780
+80475cd8: 80830000  lwz       r4, 0(r3)
+80475cdc: 908100b0  stw       r4, 0xb0(r1)
+80475ce0: 80030004  lwz       r0, 4(r3)
+80475ce4: c02100b0  lfs       f1, 0xb0(r1)
+80475ce8: c00212b4  lfs       f0, 0x12b4(r2) ; [806ff334] 43340000 f=180 i=1127481344
+80475cec: 90810030  stw       r4, 0x30(r1)
+80475cf0: fc010040  fcmpo     cr0, f1, f0
+80475cf4: 90010034  stw       r0, 0x34(r1)
+80475cf8: 90810080  stw       r4, 0x80(r1)
+80475cfc: 90010084  stw       r0, 0x84(r1)
+80475d00: 900100b4  stw       r0, 0xb4(r1)
+80475d04: 40810014  ble       0x80475d18
+80475d08: c00212bc  lfs       f0, 0x12bc(r2) ; [806ff33c] 43b40000 f=360 i=1135869952
+80475d0c: ec010028  fsubs     f0, f1, f0
+80475d10: d00100b0  stfs      f0, 0xb0(r1)
+80475d14: 4800001c  b         0x80475d30
+80475d18: c00212b8  lfs       f0, 0x12b8(r2) ; [806ff338] c3340000 f=-180 i=-1020002304
+80475d1c: fc010040  fcmpo     cr0, f1, f0
+80475d20: 40800010  bge       0x80475d30
+80475d24: c00212bc  lfs       f0, 0x12bc(r2) ; [806ff33c] 43b40000 f=360 i=1135869952
+80475d28: ec01002a  fadds     f0, f1, f0
+80475d2c: d00100b0  stfs      f0, 0xb0(r1)
+80475d30: c02100b4  lfs       f1, 0xb4(r1)
+80475d34: c00212b4  lfs       f0, 0x12b4(r2) ; [806ff334] 43340000 f=180 i=1127481344
+80475d38: fc010040  fcmpo     cr0, f1, f0
+80475d3c: 40810014  ble       0x80475d50
+80475d40: c00212bc  lfs       f0, 0x12bc(r2) ; [806ff33c] 43b40000 f=360 i=1135869952
+80475d44: ec010028  fsubs     f0, f1, f0
+80475d48: d00100b4  stfs      f0, 0xb4(r1)
+80475d4c: 4800001c  b         0x80475d68
+80475d50: c00212b8  lfs       f0, 0x12b8(r2) ; [806ff338] c3340000 f=-180 i=-1020002304
+80475d54: fc010040  fcmpo     cr0, f1, f0
+80475d58: 40800010  bge       0x80475d68
+80475d5c: c00212bc  lfs       f0, 0x12bc(r2) ; [806ff33c] 43b40000 f=360 i=1135869952
+80475d60: ec01002a  fadds     f0, f1, f0
+80475d64: d00100b4  stfs      f0, 0xb4(r1)
+80475d68: c05f0078  lfs       f2, 0x78(r31)
+80475d6c: c00100b0  lfs       f0, 0xb0(r1)
+80475d70: c02100b4  lfs       f1, 0xb4(r1)
+80475d74: ec82002a  fadds     f4, f2, f0
+80475d78: c04da104  lfs       f2, -0x5efc(r13) ; [806f2224] 40a00000 f=5 i=1084227584
+80475d7c: c00da0fc  lfs       f0, -0x5f04(r13) ; [806f221c] 41f00000 f=30 i=1106247680
+80475d80: d08100b8  stfs      f4, 0xb8(r1)
+80475d84: c07f007c  lfs       f3, 0x7c(r31)
+80475d88: ec23082a  fadds     f1, f3, f1
+80475d8c: d02100bc  stfs      f1, 0xbc(r1)
+80475d90: c03f003c  lfs       f1, 0x3c(r31)
+80475d94: 807f0078  lwz       r3, 0x78(r31)
+80475d98: ec220072  fmuls     f1, f2, f1
+80475d9c: 801f007c  lwz       r0, 0x7c(r31)
+80475da0: 906100a8  stw       r3, 0xa8(r1)
+80475da4: ec610024  fdivs     f3, f1, f0
+80475da8: c02100a8  lfs       f1, 0xa8(r1)
+80475dac: 90610008  stw       r3, 8(r1)
+80475db0: 9001000c  stw       r0, 0xc(r1)
+80475db4: 900100ac  stw       r0, 0xac(r1)
+80475db8: ec04182a  fadds     f0, f4, f3
+80475dbc: fc010040  fcmpo     cr0, f1, f0
+80475dc0: 4081000c  ble       0x80475dcc
+80475dc4: d00100a8  stfs      f0, 0xa8(r1)
+80475dc8: 48000014  b         0x80475ddc
+80475dcc: ec041828  fsubs     f0, f4, f3
+80475dd0: fc010040  fcmpo     cr0, f1, f0
+80475dd4: 40800008  bge       0x80475ddc
+80475dd8: d00100a8  stfs      f0, 0xa8(r1)
+80475ddc: c02100bc  lfs       f1, 0xbc(r1)
+80475de0: c04100ac  lfs       f2, 0xac(r1)
+80475de4: ec01182a  fadds     f0, f1, f3
+80475de8: fc020040  fcmpo     cr0, f2, f0
+80475dec: 4081000c  ble       0x80475df8
+80475df0: d00100ac  stfs      f0, 0xac(r1)
+80475df4: 48000014  b         0x80475e08
+80475df8: ec011828  fsubs     f0, f1, f3
+80475dfc: fc020040  fcmpo     cr0, f2, f0
+80475e00: 40800008  bge       0x80475e08
+80475e04: d00100ac  stfs      f0, 0xac(r1)
+80475e08: c02100a8  lfs       f1, 0xa8(r1)
+80475e0c: c00da128  lfs       f0, -0x5ed8(r13) ; [806f2248] 42a00000 f=80 i=1117782016
+80475e10: fc010040  fcmpo     cr0, f1, f0
+80475e14: 4081000c  ble       0x80475e20
+80475e18: d00100a8  stfs      f0, 0xa8(r1)
+80475e1c: 48000014  b         0x80475e30
+80475e20: fc000050  fneg      f0, f0
+80475e24: fc010040  fcmpo     cr0, f1, f0
+80475e28: 40800008  bge       0x80475e30
+80475e2c: d00100a8  stfs      f0, 0xa8(r1)
+80475e30: c02100a8  lfs       f1, 0xa8(r1)
+80475e34: 38610050  addi      r3, r1, 0x50
+80475e38: c01f0078  lfs       f0, 0x78(r31)
+80475e3c: c04100ac  lfs       f2, 0xac(r1)
+80475e40: ec210028  fsubs     f1, f1, f0
+80475e44: c01f007c  lfs       f0, 0x7c(r31)
+80475e48: 80810008  lwz       r4, 8(r1)
+80475e4c: 8001000c  lwz       r0, 0xc(r1)
+80475e50: ec420028  fsubs     f2, f2, f0
+80475e54: 908100a0  stw       r4, 0xa0(r1)
+80475e58: c3cda108  lfs       f30, -0x5ef8(r13) ; [806f2228] 3d4ccccd f=0.0500000007 i=1028443341
+80475e5c: 900100a4  stw       r0, 0xa4(r1)
+80475e60: 4bdd6921  bl        0x8024c780
+80475e64: 80830000  lwz       r4, 0(r3)
+80475e68: 80030004  lwz       r0, 4(r3)
+80475e6c: 38610048  addi      r3, r1, 0x48
+80475e70: 90810070  stw       r4, 0x70(r1)
+80475e74: 90010074  stw       r0, 0x74(r1)
+80475e78: c0210070  lfs       f1, 0x70(r1)
+80475e7c: c0010074  lfs       f0, 0x74(r1)
+80475e80: ec3e0072  fmuls     f1, f30, f1
+80475e84: 90810028  stw       r4, 0x28(r1)
+80475e88: ec5e0032  fmuls     f2, f30, f0
+80475e8c: 9001002c  stw       r0, 0x2c(r1)
+80475e90: 4bdd68f1  bl        0x8024c780
+80475e94: c01f0078  lfs       f0, 0x78(r31)
+80475e98: 80030004  lwz       r0, 4(r3)
+80475e9c: fc200210  fabs      f1, f0
+80475ea0: 80630000  lwz       r3, 0(r3)
+80475ea4: c00da128  lfs       f0, -0x5ed8(r13) ; [806f2248] 42a00000 f=80 i=1117782016
+80475ea8: c04da12c  lfs       f2, -0x5ed4(r13) ; [806f224c] 3fc00000 f=1.5 i=1069547520
+80475eac: ec610024  fdivs     f3, f1, f0
+80475eb0: c00da130  lfs       f0, -0x5ed0(r13) ; [806f2250] 3e800000 f=0.25 i=1048576000
+80475eb4: 9001009c  stw       r0, 0x9c(r1)
+80475eb8: c021009c  lfs       f1, 0x9c(r1)
+80475ebc: 90610020  stw       r3, 0x20(r1)
+80475ec0: 90010024  stw       r0, 0x24(r1)
+80475ec4: ec001028  fsubs     f0, f0, f2
+80475ec8: 90610078  stw       r3, 0x78(r1)
+80475ecc: 9001007c  stw       r0, 0x7c(r1)
+80475ed0: ec03103a  fmadds    f0, f3, f0, f2
+80475ed4: 90610098  stw       r3, 0x98(r1)
+80475ed8: fc010040  fcmpo     cr0, f1, f0
+80475edc: 4081000c  ble       0x80475ee8
+80475ee0: d001009c  stfs      f0, 0x9c(r1)
+80475ee4: 48000014  b         0x80475ef8
+80475ee8: fc000050  fneg      f0, f0
+80475eec: fc010040  fcmpo     cr0, f1, f0
+80475ef0: 40800008  bge       0x80475ef8
+80475ef4: d001009c  stfs      f0, 0x9c(r1)
+80475ef8: c07f0078  lfs       f3, 0x78(r31)
+80475efc: 38610040  addi      r3, r1, 0x40
+80475f00: c0210098  lfs       f1, 0x98(r1)
+80475f04: c05f007c  lfs       f2, 0x7c(r31)
+80475f08: ec83082a  fadds     f4, f3, f1
+80475f0c: c001009c  lfs       f0, 0x9c(r1)
+80475f10: c02100a0  lfs       f1, 0xa0(r1)
+80475f14: ec62002a  fadds     f3, f2, f0
+80475f18: c00100a4  lfs       f0, 0xa4(r1)
+80475f1c: 809f0080  lwz       r4, 0x80(r31)
+80475f20: 801f0084  lwz       r0, 0x84(r31)
+80475f24: ec240828  fsubs     f1, f4, f1
+80475f28: ec430028  fsubs     f2, f3, f0
+80475f2c: d09f0078  stfs      f4, 0x78(r31)
+80475f30: d07f007c  stfs      f3, 0x7c(r31)
+80475f34: 90810090  stw       r4, 0x90(r1)
+80475f38: 90010094  stw       r0, 0x94(r1)
+80475f3c: 4bdd6845  bl        0x8024c780
+80475f40: 80830000  lwz       r4, 0(r3)
+80475f44: 80030004  lwz       r0, 4(r3)
+80475f48: 38610038  addi      r3, r1, 0x38
+80475f4c: 90810068  stw       r4, 0x68(r1)
+80475f50: c0210090  lfs       f1, 0x90(r1)
+80475f54: c0810068  lfs       f4, 0x68(r1)
+80475f58: 9001006c  stw       r0, 0x6c(r1)
+80475f5c: c0010094  lfs       f0, 0x94(r1)
+80475f60: ec240828  fsubs     f1, f4, f1
+80475f64: c061006c  lfs       f3, 0x6c(r1)
+80475f68: 90810018  stw       r4, 0x18(r1)
+80475f6c: ec430028  fsubs     f2, f3, f0
+80475f70: 9001001c  stw       r0, 0x1c(r1)
+80475f74: d09f0080  stfs      f4, 0x80(r31)
+80475f78: d07f0084  stfs      f3, 0x84(r31)
+80475f7c: 4bdd6805  bl        0x8024c780
+80475f80: c03f007c  lfs       f1, 0x7c(r31)
+80475f84: c00212c0  lfs       f0, 0x12c0(r2) ; [806ff340] 3f360b61 f=0.711111128 i=1060506465
+80475f88: 80830000  lwz       r4, 0(r3)
+80475f8c: ec400072  fmuls     f2, f0, f1
+80475f90: c03f0078  lfs       f1, 0x78(r31)
+80475f94: 80030004  lwz       r0, 4(r3)
+80475f98: 386100e8  addi      r3, r1, 0xe8
+80475f9c: ec200072  fmuls     f1, f0, f1
+80475fa0: 90810010  stw       r4, 0x10(r1)
+80475fa4: c06212b0  lfs       f3, 0x12b0(r2) ; [806ff330] 00000000 f=0 i=0
+80475fa8: 90010014  stw       r0, 0x14(r1)
+80475fac: 90810060  stw       r4, 0x60(r1)
+80475fb0: 90010064  stw       r0, 0x64(r1)
+80475fb4: 90810088  stw       r4, 0x88(r1)
+80475fb8: 9001008c  stw       r0, 0x8c(r1)
+80475fbc: 4bcc6335  bl        0x8013c2f0
+80475fc0: 387f0018  addi      r3, r31, 0x18
+80475fc4: 389f0054  addi      r4, r31, 0x54
+80475fc8: 38a100e8  addi      r5, r1, 0xe8
+80475fcc: 4beb1699  bl        0x80327664
+80475fd0: c05f00a0  lfs       f2, 0xa0(r31)
+80475fd4: c02212a8  lfs       f1, 0x12a8(r2) ; [806ff328] 3f800000 f=1 i=1065353216
+80475fd8: c00212b0  lfs       f0, 0x12b0(r2) ; [806ff330] 00000000 f=0 i=0
+80475fdc: ec220828  fsubs     f1, f2, f1
+80475fe0: d03f00a0  stfs      f1, 0xa0(r31)
+80475fe4: fc010040  fcmpo     cr0, f1, f0
+80475fe8: 4c401382  cror      cr0eq, cr0lt, cr0eq
+80475fec: 40820248  bne       0x80476234
+80475ff0: 3c6041c6  lis       r3, 0x41c6
+80475ff4: 80adcff0  lwz       r5, -0x3010(r13)
+80475ff8: 38034e6d  addi      r0, r3, 0x4e6d
+80475ffc: 388dcff0  addi      r4, r13, -0x3010

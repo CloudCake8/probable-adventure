@@ -1,0 +1,9 @@
+{
+  "name": "resortcompiled-pingpong",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Web port of Wii Sports Resort Table Tennis with phone gyro controllers",
+  "scripts": { "start": "node server/index.js", "test": "node server/test.js" },
+  "dependencies": { "qrcode": "^1.5.4", "three": "0.170.0", "ws": "^8.18.0" }
+}
