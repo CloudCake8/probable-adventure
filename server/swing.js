@@ -79,7 +79,7 @@ export class SwingDetector {
     // brushing upward at contact = topspin, downward = backspin
     const spin = clamp((vz / sp) * 1.6 + 0.15, -1, 1);
     const aim = clamp(this.yawAtPeak / 30, -1, 1);
-    return { kind: 'swing', power, side, spin, aim, lat: clamp(vx / sp, -1, 1), mag: this.peak };
+    return { kind: 'swing', power, side, spin, aim, lat: clamp(vx / sp, -1, 1), mag: this.peak, peakTs: this.peakT * 1000 };   // peakTs: phone clock (ms) of the peak, for lag compensation
   }
 }
 

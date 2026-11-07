@@ -35,7 +35,14 @@ export const K = {
   WHIFF_LOCK: 1.0,   // seconds a missed swing leaves you unable to swing again (anti swing-spam)
   SLOW: 1.75,         // flight-time multiplier: >1 = slower, floatier ball
   DIVE_REACH: 20,    // lateral distance (from the stance spot) a swinging player can still lunge for; hits beyond 6.5 are dives
-  LATENCY: 0.07,     // seconds between the true swing peak and its registration (detector + network)
+  LATENCY: 0.07,     // seconds between the true swing peak and its registration (detector + network). Phone swings are now timed
+                     // from their actual peak plus this nominal delay (lag compensation), so this is the timing calibration knob.
+  FACE_ARC: 0.3,     // racket face tilt at contact: fully open (40 deg up) = 30% longer, higher flight; fully closed = 30% flatter, faster
+  PERFECT: 0.25,     // |timing| under this is a PERFECT hit (12% faster shot); the phone shows PERFECT at the same threshold
+  SPIN_READ: 0.6,    // face tilt the incoming spin asks for (1 = 40 deg). Spin at contact runs median 0.42, p90 0.71 (CPU rallies), so a
+                     // typical ball wants the face ~10 deg closed vs topspin / opened vs backspin, and a heavy one ~17 deg
+  SPIN_FAULT: 1.1,   // misjudging that by more than this (44 deg) puts the ball in the net (too closed) or long (too open); smaller misses
+                     // only shape the shot, and from 0.6 (24 deg) too open the ball pops up for the opponent to smash
   MOVE_SPEED: 62,
   POINTS_TO_WIN: 11,
 };
@@ -43,6 +50,7 @@ export const K = {
 const sgn = (v) => (v < 0 ? -1 : 1);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const lerp = (a, b, t) => a + (b - a) * t;
+export const topspin = (b) => clamp(b.w[0] * Math.sign(b.v[2]) / 40, -1.5, 1.5);   // spin relative to travel: + topspin, - backspin (1 = full brush)
 
 export function newBall() {
   return { p: [0, 6, 0], v: [0, 0, 0], w: [0, 0, 0], qx: 0, qy: 0, qz: 0 };
@@ -109,7 +117,9 @@ function bounceTable(b) {
   const L = Math.hypot(tx, tz);
   if (L > 1e-6) {
     const cap = jn * K.MU;
-    const j = Math.min(L, cap);
+    // at most the 40% a hollow ball loses when it grips and starts rolling (the recovered model could cancel it all): steep, slow balls
+    // landing short no longer stop dead and bob in place near the net, out of everyone's reach
+    const j = Math.min(L * 0.4, cap);
     const dvx = -tx / L * j, dvz = -tz / L * j;
     b.v[0] += dvx; b.v[2] += dvz;
     // dw = r x dv  (inverse inertia 1)
@@ -145,8 +155,8 @@ function trace(b0, maxT = 3.0) {
 }
 
 // Plan a rally return: set v and w on `ball` so it (approximately) lands on (tx, tz).
-export function planRally(ball, tx, tz, power, spinParam, sg, Tover) {
-  let T = Math.max((Tover ?? lerp(0.95, 0.42, power)) * K.SLOW, Tover !== undefined && Tover < 0.5 ? 0.34 : 0.62);   // smashes (small Tover) may be fast; normal shots never faster than a human can react to   // never faster than a human can react to
+export function planRally(ball, tx, tz, power, spinParam, sg, Tover, arc = 1) {
+  let T = Math.max((Tover ?? lerp(0.95, 0.42, power)) * K.SLOW * arc, Tover !== undefined && Tover < 0.5 ? 0.34 : 0.62);   // smashes (small Tover) may be fast; normal shots never faster than a human can react to   // never faster than a human can react to
   let best = null;
   for (let attempt = 0; attempt < 6; attempt++) {
     const b = cloneBall(ball);
@@ -341,6 +351,9 @@ export class Game {
     }
     s.swingT = this.t;
     s.swing = { t: this.t, power: clamp(sw.power ?? 0.5, 0.1, 1), side: sw.side >= 0 ? 1 : -1, spin: clamp(sw.spin ?? 0, -1, 1), aim: clamp(sw.aim ?? 0, -1, 1), lat: sw.lat, used: false };
+    // lag compensation: a phone swing is timed from when it actually peaked (sw.ago, from the phone's clock) plus the nominal delay the
+    // timing was tuned with, so a packet that arrives late (network jitter) no longer turns into a late shot
+    if (Number.isFinite(sw.ago)) s.swing.t = this.t - clamp(sw.ago - K.LATENCY, -0.05, 0.15);
     this.ensureRacket(s);
     s.rkp.startSwing(s.swing.side === 1 ? 1 : 0, s.swing.power > 0.7 ? 75 : 45);
     s.swingUsed = false; s.diveStart = 0;
@@ -530,6 +543,21 @@ export class Game {
   }
 
   // ---- racket (recovered game logic, research/racket.md): pose from the controller, free object in the world -----------------
+  // racket face tilt of a phone player, as the on-screen paddle shows it: + open (facing up), - closed, 1 = 40 deg. 0 while the blade is
+  // side-on, and tilts under 8 deg count as flat so orientation noise cannot change a shot. null for players without a phone.
+  faceOpen(s, sg) {
+    if (!s.rk || !s.rk.phone) return null;
+    const n = s.rk.rows[1], f = -sg * n[2], k = f < 0 ? -1 : 1;          // blade normal, turned toward the opponent (forward = -sg z)
+    const tilt = f * k > 0.35 ? Math.atan2(n[1] * k, f * k) / 0.7 : 0;
+    return Math.sign(tilt) * clamp((Math.abs(tilt) - 0.2) / 0.8, 0, 1);
+  }
+  // how far a phone player's face is from what the incoming ball's spin asks for (+ too open, - too closed), while the ball is on its
+  // way to them; the PC tints their paddle with it so the spin read can be learned. null otherwise.
+  faceCue(s, i) {
+    const b = this.ball, face = this.faceOpen(s, this.sg(i));
+    if (face === null || this.phase !== 'rally' || this.lastHitter === i || b.v[2] * this.sg(i) <= 0) return null;
+    return +(face + K.SPIN_READ * topspin(b)).toFixed(2);
+  }
   ensureRacket(s) {
     if (s.rkp) return;
     s.rkp = new RacketPose(false); s.rkh = new RemoteHeading(); s.rkTheta = null; s.rkSyn = null; s.rk = null; s.rkPrevPivot = null; s.touch = null; s.swingUsed = true;
@@ -647,11 +675,12 @@ export class Game {
     // intercept assist drags the racket toward the ball and made it point at random.) The blade angle and wrist yaw only nudge it.
     const sl = (sw.lat !== undefined ? sw.lat : lat) * (s.aimFlip ? -1 : 1);
     const dirn = Math.sign(sl) * Math.min(1, Math.abs(sl) * 1.5);
-    const reachF0 = Math.abs(s.z) - Math.abs(b.p[2]);
+    // ball depth when the swing counted (lag-compensated swing time), not when its packet happened to arrive
+    const reachF0 = Math.abs(s.z) - Math.abs(b.p[2]) + (Number.isFinite(sw.t) ? clamp(this.t - sw.t, -0.05, 0.15) : 0) * Math.abs(b.v[2]);
     const tq = -clamp((reachF0 - 3) / 6, -1, 1);                         // contact well ahead of the body = early (-), behind = late (+)
     const aimLx = clamp(dirn * 1.05 + clamp(ang / 0.55, -1, 1) * 0.15 + sw.aim * 0.2 - tq * sw.side * s.hand * 0.3, -1.2, 1.2);
     const spin = clamp(vel[1] / vs * 1.2 + sw.spin * 0.5, -1, 1);
-    this.completeReturn(r, sw, { q: tq, aimLx, spin, power: sw.power, reachX: Math.abs(b.p[0] - s.x), reachF: Math.abs(s.z) - Math.abs(b.p[2]) });
+    this.completeReturn(r, sw, { q: tq, aimLx, spin, open: this.faceOpen(s, sg), power: sw.power, reachX: Math.abs(b.p[0] - s.x), reachF: Math.abs(s.z) - Math.abs(b.p[2]) });
   }
 
   stepRally(dt) {
@@ -707,7 +736,7 @@ export class Game {
     if (b.v[2] * sg <= 0) return;
     const dz = b.p[2] * sg;
     const plane = Math.abs(s.z) - (s.fwd ?? 2);
-    if (dz < plane - 11 || dz > plane + 16) return;
+    if (dz < plane - 14 || dz > plane + 16) return;     // reaching over the table for short balls
     const stanceX = sw.side === 1 ? s.hand * sg * 5.5 : -s.hand * sg * 4.0;       // where the ball sits relative to the body for this stroke
     if (Math.abs(b.p[0] - (s.x + stanceX)) > K.DIVE_REACH) {   // beyond normal reach (6.5) a swing becomes a lunge/dive
       if (dz > plane) { sw.used = true; this.feedback(r, { kind: 'miss', why: 'reach' }); }
@@ -721,12 +750,17 @@ export class Game {
     const latDir = sw.lat !== undefined ? clamp(sw.lat, -1, 1) : -sw.side * s.hand * 0.6;      // swing direction (player right positive): fore sweeps left, back sweeps right
     const aimLx = clamp(-q * sw.side * s.hand * 0.9 + sw.aim * 0.6 + latDir * 0.5, -1.2, 1.2);
     s.touch = { p: b.p.slice(), t: this.t };
-    this.completeReturn(r, sw, { q, aimLx, spin: sw.spin, power: sw.power, reachX, reachF });
+    this.completeReturn(r, sw, { q, aimLx, spin: sw.spin, open: this.faceOpen(s, sg), power: sw.power, reachX, reachF });
   }
 
   completeReturn(r, sw, info) {
     const s = this.seats[r], sg = this.sg(r), b = this.ball;
     const { q, aimLx, reachF } = info;
+    // SPIN READ (as in real table tennis): incoming topspin must be met with a closed face, backspin with an open one. Phone players set
+    // the face with their hand; the CPU reads it with skill-dependent error; mouse / swipe players (no face input) read it perfectly.
+    const spinIn = topspin(b), need = -K.SPIN_READ * spinIn;
+    const face = info.open ?? (s.kind === 'cpu' ? need + (Math.random() + Math.random() + Math.random() - 1.5) * lerp(0.8, 0.25, s.skill) * Math.abs(spinIn) : need);
+    const err = clamp(face - need, -1.5, 1.5);          // + too open (pops up, sails long), - too closed (dips into the net)
     const reachX = Math.max(info.reachX, s.diveStart || 0);                 // a dash counts as the reach it covered (dive clip, wobbly lob)
     s.diveStart = 0;
     let tx = 0;   // set below from the launch angle
@@ -749,12 +783,20 @@ export class Game {
     if (kind === 'hit') {
       // the shot leaves at an ANGLE set by aim (swing direction + timing); where it lands follows from the angle and the distance, so
       // moderate angles stay on the table and only extreme ones go wide
-      const L = Math.abs(tz - b.p[2]);
+      const L = Math.min(Math.abs(tz - b.p[2]), 30);    // capped: a ball taken from deep behind the table no longer exaggerates the angle
       tx = b.p[0] * 0.4 + sg * Math.tan(aimLx * 20 * Math.PI / 180) * L;
     } else if (kind === 'weak') tx = sg * aimLx * 7.6 * 0.5;
-    const spinUse = kind === 'weak' ? 0 : Math.max(info.spin, -0.35);      // a wobbly lob carries no spin; backspin on any shot is capped so it stays playable
-    planRally(b, clamp(tx, -14, 14), tz, power, spinUse, sg, Tover);
-    b.wob = kind === 'weak';
+    const fault = kind === 'hit' && Math.abs(err) > K.SPIN_FAULT ? (err > 0 ? 'long' : 'net') : null;
+    const pop = kind === 'hit' && !fault && err > 0.6;  // face left too open against topspin: a high floater the opponent can smash
+    const spinUse = kind === 'weak' || pop ? 0 : Math.max(info.spin, -0.7);   // lobs and pop-ups carry no spin; backspin capped so it stays playable
+    // flight-time multiplier for normal hits: the face tilt left over after meeting the spin (open = higher/slower, closed = flatter/faster)
+    // and timing (PERFECT = crisper, badly mistimed = floatier). planRally keeps its reaction-time floor, so drives never outpace a smash.
+    const arc = kind !== 'hit' ? 1 : (1 + K.FACE_ARC * clamp(err, -1, 1)) * (Math.abs(q) < K.PERFECT ? 0.88 : 1 + Math.max(0, Math.abs(q) - 0.6) * 0.5);
+    if (fault === 'net') {                              // dips into the net: aim at the middle of the net
+      const T = 0.42;
+      b.v = [-b.p[0] * 0.5 / T, (K.NET_H * 0.6 - b.p[1] + 0.5 * K.G * T * T) / T, -b.p[2] / T]; b.w = [0, 0, 0];
+    } else planRally(b, kind === 'hit' ? clamp(tx, -(K.HW - 0.6), K.HW - 0.6) : clamp(tx, -14, 14), fault === 'long' ? -sg * (K.HL + 4 + Math.random() * 4) : tz, power, spinUse, sg, Tover, arc);
+    b.wob = kind === 'weak' || pop;
     b.smash = kind === 'smash';
     this.lastHitter = r;
     this.ballStage = 'oppBounce';
@@ -763,9 +805,9 @@ export class Game {
       if (reachX >= 9) { const lx = (sg > 0 ? -1 : 1) * (b.p[0] - s.x) * 0.55; s.mv.Px += lx; s.mv.Vx += lx; }   // the dive: lunge toward the ball
     }                        // stop chasing for ~90-200 updates after a stroke
     this.rallyLen++;
-    this.emit({ type: kind === 'smash' ? 'smash' : 'hit', seat: r, speed: Math.hypot(...b.v), timing: q, weak: kind === 'weak', reachX, reachF, side: sw.side, spin: info.spin, tw: s.rkp ? s.rkp.a194 : 0 });
+    this.emit({ type: kind === 'smash' ? 'smash' : 'hit', seat: r, speed: Math.hypot(...b.v), timing: q, weak: kind === 'weak', reachX, reachF, side: sw.side, spin: info.spin, tw: s.rkp ? s.rkp.a194 : 0, fault, pop });
     if (kind === 'smash') this.emit({ type: 'hit', seat: r, speed: Math.hypot(...b.v), timing: q, reachX, reachF, side: sw.side, spin: info.spin, tw: s.rkp ? s.rkp.a194 : 0 });
-    this.feedback(r, { kind, timing: q, power: sw.power });
+    this.feedback(r, { kind, timing: q, power: sw.power, err, spinIn, fault, pop });
   }
 
   // ---- CPU ---------------------------------------------------------------------------------
@@ -788,13 +830,13 @@ export class Game {
           // gaussian-ish noise
           const n = (Math.random() + Math.random() + Math.random() - 1.5) * 1.6;
           const missRoll = Math.random() < (this.ball.smash ? 0.65 : lerp(0.32, 0.09, s.skill));
-          c.planned = { at: this.t + pr.t + n * sigma + (missRoll ? 0.25 : 0), x: pr.x };
+          c.planned = { at: this.t + pr.t + n * sigma + (missRoll ? 0.6 : 0), x: pr.x };   // a miss swings far too late (balls carry on after the bounce now, so 0.25 s still connected)
         }
       } else if (this.t >= c.planned.at) {
         const side = (c.planned.x - s.x) * sg > 0 ? 1 : -1;   // ball on player's right -> forehand
         this.registerSwing(i, {
           power: this.ball.wob ? (Math.random() < 0.4 + 0.5 * s.skill ? 0.95 : 0.4) : lerp(0.42, 0.7, Math.random()),
-          side, spin: Math.random() * 0.8 - 0.2, aim: (Math.random() - 0.5) * 1.4,
+          side, spin: Math.random() < 0.3 ? -0.3 - Math.random() * 0.4 : 0.1 + Math.random() * 0.8, aim: (Math.random() - 0.5) * 1.4,   // chops and loops
         });
         c.planned = null;
       }
@@ -812,8 +854,8 @@ export class Game {
       score: this.score,
       server: this.server,
       serveStage: this.serveStage,
-      ball: { wob: b.wob ? 1 : 0, sm: b.smash ? 1 : 0, p: b.p.map((v) => +v.toFixed(3)), v: b.v.map((v) => +v.toFixed(2)), q: [+b.qx.toFixed(3), +b.qy.toFixed(3), +b.qz.toFixed(3)] },
-      seats: this.seats.map((s) => ({ rk: s.rk ? { phone: s.rk.phone, pos: s.rk.pos.map((v) => +v.toFixed(3)), X: s.rk.cols[0].map((v) => +v.toFixed(4)), Y: s.rk.cols[1].map((v) => +v.toFixed(4)), Z: s.rk.cols[2].map((v) => +v.toFixed(4)), grip: s.rk.grip.map((v) => +v.toFixed(3)) } : null, tilt: s.tilt && this.t - s.tiltT < 1 ? s.tilt : null, kind: s.kind, name: s.name, hand: s.hand, x: +s.x.toFixed(3), z: +s.z.toFixed(3), vx: +s.vx.toFixed(1), vz: +s.vz.toFixed(1), online: s.online })),
+      ball: { wob: b.wob ? 1 : 0, sm: b.smash ? 1 : 0, p: b.p.map((v) => +v.toFixed(3)), v: b.v.map((v) => +v.toFixed(2)), w: b.w.map((v) => +v.toFixed(1)), q: [+b.qx.toFixed(3), +b.qy.toFixed(3), +b.qz.toFixed(3)] },
+      seats: this.seats.map((s, i) => ({ rk: s.rk ? { phone: s.rk.phone, pos: s.rk.pos.map((v) => +v.toFixed(3)), X: s.rk.cols[0].map((v) => +v.toFixed(4)), Y: s.rk.cols[1].map((v) => +v.toFixed(4)), Z: s.rk.cols[2].map((v) => +v.toFixed(4)), grip: s.rk.grip.map((v) => +v.toFixed(3)) } : null, tilt: s.tilt && this.t - s.tiltT < 1 ? s.tilt : null, fe: this.faceCue(s, i), kind: s.kind, name: s.name, hand: s.hand, x: +s.x.toFixed(3), z: +s.z.toFixed(3), vx: +s.vx.toFixed(1), vz: +s.vz.toFixed(1), online: s.online })),
       win: this.winner,
       toWin: this.pointsToWin,
       ev: this.events,

@@ -21,19 +21,20 @@ pad.on('message', (d) => {
   else if (m.t === 'fb') { fb[m.kind] = (fb[m.kind] || 0) + 1; if (m.kind === 'hit') log('hit timing', m.timing.toFixed(2)); }
 });
 
-let ts = 0, busyUntil = 0;
-function burst(dirx, dirz, peak, delayMs = 0) {
-  busyUntil = Date.now() + delayMs + 16 * 16 + 20;
-  // schedule samples at 60 Hz in real time; peak occurs ~110 ms after start
-  for (let i = 0; i < 16; i++) {
-    setTimeout(() => {
-      const a = peak * Math.sin((i / 15) * Math.PI);
-      ts += 16;
-      pad.send(JSON.stringify({ t: 'm', ax: dirx * a, ay: 0.15 * a, az: dirz * a, yaw: 0, ts }));
-    }, delayMs + i * 16);
-  }
+// 60 Hz sample clock on real time, like a phone's devicemotion: samples are stamped with performance.now() as the real controller
+// does, so the server's lag compensation sees a real clock. Windows timers fire late (~15.6 ms ticks), so catch up several at a time.
+let ts = performance.now(), queue = [];
+function burst(dirx, dirz, peak, delayMs = 0) {   // peak occurs ~120 ms after start
+  queue = [...Array(Math.round(delayMs / 16)).fill(null), ...[...Array(16)].map((_, i) => { const a = peak * Math.sin((i / 15) * Math.PI); return { ax: dirx * a, ay: 0.15 * a, az: dirz * a }; })];
 }
-setInterval(() => { if (Date.now() < busyUntil) return; ts += 16; if (pad.readyState === 1) pad.send(JSON.stringify({ t: 'm', ax: 0, ay: 0, az: 0, yaw: 0, ts })); }, 16);
+setInterval(() => {
+  const now = performance.now();
+  while (ts + 16 <= now) {
+    ts += 16;
+    const a = queue.shift() || { ax: 0, ay: 0, az: 0 };
+    if (pad.readyState === 1) pad.send(JSON.stringify({ t: 'm', ...a, yaw: 0, ts: Math.round(ts) }));
+  }
+}, 4);
 
 let lastAct = 0, swung = false;
 setInterval(() => {

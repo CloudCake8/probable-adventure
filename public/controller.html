@@ -3,40 +3,74 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#10243a">
+<meta name="theme-color" content="#7fcfff">
 <title>Table Tennis Controller</title>
 <style>
-  :root { --bg:#10243a; --card:#1b3552; --ink:#f2f7fc; --dim:#9db4cb; --accent:#37a0ff; --ok:#3ddc84; --warn:#ffb14a; }
+  /* Frutiger Aero to match the PC screen: sky gradient, frosted glass, glossy green CrystalDiskMark-style tiles */
+  :root { --ink:#0e2a44; --dim:#33607f; --line:#8fb6d0; --ok:#1f8a0e; --warn:#b85a00; }
   * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html,body { margin:0; height:100%; background:var(--bg); color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",sans-serif; overflow:hidden; touch-action:none; user-select:none; -webkit-user-select:none; }
+  html,body { margin:0; height:100%; color:var(--ink); font-family:"Segoe UI",system-ui,-apple-system,sans-serif; overflow:hidden; touch-action:none; user-select:none; -webkit-user-select:none;
+    background:linear-gradient(180deg,#7fcfff 0%,#bfeaff 40%,#eafaff 75%,#effff3 100%); }
+  body::before { content:""; position:fixed; inset:0; pointer-events:none; background:
+    radial-gradient(circle at 12% 16%,rgba(255,255,255,.45) 0 20px,transparent 21px), radial-gradient(circle at 86% 28%,rgba(255,255,255,.35) 0 32px,transparent 33px),
+    radial-gradient(circle at 72% 84%,rgba(255,255,255,.4) 0 16px,transparent 17px), radial-gradient(circle at 22% 68%,rgba(255,255,255,.3) 0 38px,transparent 39px); }
   .screen { position:fixed; inset:0; display:none; flex-direction:column; padding:calc(18px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom)); gap:14px; }
   .screen.on { display:flex; }
-  h1 { margin:6px 0 0; font-size:26px; } p { margin:0; color:var(--dim); line-height:1.45; }
-  input[type=text] { font:inherit; font-size:18px; padding:14px; border-radius:14px; border:2px solid #2c4d70; background:#0c1b2c; color:var(--ink); width:100%; }
-  .seg { display:flex; background:#0c1b2c; border-radius:14px; padding:4px; gap:4px; }
-  .seg button { flex:1; padding:12px; border:0; border-radius:10px; font:inherit; font-weight:700; background:transparent; color:var(--dim); }
-  .seg button.on { background:var(--accent); color:#04121f; }
-  .big { font:inherit; font-size:22px; font-weight:800; padding:20px; border:0; border-radius:18px; background:var(--accent); color:#04121f; width:100%; }
-  .big.alt { background:#2a4766; color:var(--ink); font-size:16px; padding:14px; }
-  .big:active { transform:scale(.98); }
-  #pill { align-self:flex-start; padding:4px 12px; border-radius:99px; font-size:13px; font-weight:700; background:#27425f; color:var(--dim); }
-  #pill.ok { background:#12402a; color:var(--ok); } #pill.bad { background:#4a2a14; color:var(--warn); }
-  #score { display:flex; justify-content:center; align-items:center; gap:14px; font-size:64px; font-weight:800; line-height:1; margin-top:2px; }
-  #score small { font-size:18px; color:var(--dim); font-weight:600; display:block; text-align:center; }
-  #score div { text-align:center; } #score .me b { color:var(--accent); } #score .sep { font-size:36px; color:var(--dim); }
-  #status { font-size:28px; font-weight:800; text-align:center; min-height:76px; display:flex; align-items:center; justify-content:center; line-height:1.15; }
-  #fb { text-align:center; font-size:22px; font-weight:800; height:30px; color:var(--ok); }
-  #meter { height:18px; background:#0c1b2c; border-radius:9px; overflow:hidden; } #meter i { display:block; height:100%; width:0; background:linear-gradient(90deg,var(--accent),var(--ok)); transition:width .08s; }
-  #pad { flex:1; border-radius:24px; background:var(--card); border:2px dashed #35577d; display:flex; align-items:center; justify-content:center; text-align:center; padding:20px; color:var(--dim); font-size:15px; }
-  #pad.flash { background:#245b45; }
+  .glass, input[type=text], .seg, #pad, #meter { background:linear-gradient(180deg,rgba(255,255,255,.95) 0%,rgba(236,248,255,.88) 48%,rgba(218,240,253,.86) 52%,rgba(244,251,255,.92) 100%);
+    border:1px solid rgba(255,255,255,.95); box-shadow:0 0 0 1px rgba(30,110,170,.3),0 6px 18px rgba(0,50,100,.18),inset 0 1px 0 #fff; }
+  h1 { margin:6px 0 0; font-size:28px; text-shadow:0 1px 0 #fff,0 0 12px rgba(255,255,255,.9); } p { margin:0; color:var(--dim); line-height:1.45; }
+  input[type=text] { font:inherit; font-size:18px; padding:14px; border-radius:12px; color:var(--ink); width:100%; outline:none; }
+  input[type=text]:focus { box-shadow:0 0 0 2px #3aa6e0,inset 0 1px 0 #fff; }
+  .seg { display:flex; border-radius:12px; padding:4px; gap:4px; }
+  .seg button { flex:1; padding:12px; border:1px solid transparent; border-radius:9px; font:inherit; font-weight:700; background:transparent; color:var(--dim); }
+  .seg button.on, .big { color:#fff; text-shadow:0 1px 1px rgba(0,70,0,.7); border:1px solid #2a8a16; background:linear-gradient(180deg,#d6fbbf 0%,#86e05e 45%,#45bb24 55%,#73d849 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.85); }
+  .big { font:inherit; font-size:22px; font-weight:800; padding:20px; border-radius:16px; width:100%; box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 3px 10px rgba(0,60,0,.25); }
+  .big.alt { color:var(--ink); text-shadow:none; font-size:16px; padding:14px; border:1px solid var(--line); background:linear-gradient(180deg,#ffffff 0%,#eaf5fc 48%,#d6eaf7 52%,#f2f9fd 100%); box-shadow:inset 0 1px 0 #fff,0 2px 6px rgba(0,40,80,.15); }
+  .big:active { transform:scale(.98); filter:brightness(.95); }
+  #pill { align-self:flex-start; padding:4px 12px; border-radius:99px; font-size:13px; font-weight:700; color:var(--dim); border:1px solid var(--line); background:linear-gradient(180deg,#fff,#dcecf7); }
+  #pill.ok { color:var(--ok); border-color:#57b52f; background:linear-gradient(180deg,#eaffdc,#a8e884); } #pill.bad { color:var(--warn); border-color:#e0a050; background:linear-gradient(180deg,#fff6e6,#ffd59c); }
+  #score { display:flex; justify-content:center; align-items:stretch; gap:10px; margin-top:2px; }
+  #score div { display:flex; flex-direction:column; min-width:110px; text-align:center; }
+  #score small { font-size:13px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; padding:5px 10px; border-radius:8px 8px 0 0; color:#fff; text-shadow:0 1px 1px rgba(0,70,0,.65);
+    border:1px solid #2e8f1a; background:linear-gradient(180deg,#d9fbc6 0%,#7fdc5a 46%,#44b923 54%,#6fd246 100%); }
+  #score b { font-size:56px; font-weight:800; line-height:1.1; padding:2px 10px; border-radius:0 0 8px 8px; border:1px solid #9ab8cc; border-top:0; font-variant-numeric:tabular-nums;
+    background:linear-gradient(180deg,#ffffff 0%,#eef6fb 50%,#e3eef6 51%,#f6fafd 100%); }
+  #score .me b { color:#1a7fd0; } #score .sep { align-self:center; font-size:30px; color:var(--dim); }
+  #status { font-size:26px; font-weight:800; text-align:center; min-height:72px; display:flex; align-items:center; justify-content:center; line-height:1.15; text-shadow:0 1px 0 #fff,0 0 10px rgba(255,255,255,.9); }
+  #fb { text-align:center; font-size:20px; font-weight:800; min-height:28px; color:var(--ok); text-shadow:0 1px 0 #fff; }
+  #meter { height:18px; border-radius:9px; overflow:hidden; } #meter i { display:block; height:100%; width:0; background:linear-gradient(180deg,#d6fbbf,#5ccf3a 50%,#3fb51f 51%,#7fe05a); transition:width .08s; }
+  #pad { flex:1; border-radius:22px; display:flex; align-items:center; justify-content:center; text-align:center; padding:20px; color:var(--dim); font-size:15px; transition:box-shadow .12s; }
+  #pad.flash { box-shadow:0 0 0 3px #5ccf3a,0 0 28px rgba(92,207,58,.8),inset 0 1px 0 #fff; }
   .row { display:flex; gap:10px; }
   .warn { color:var(--warn); }
+  #calib { z-index:5; justify-content:center; text-align:center; background:rgba(214,240,255,.92); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+  .mini { font:inherit; font-size:14px; font-weight:700; padding:6px 12px; border-radius:99px; color:var(--ink); border:1px solid var(--line); background:linear-gradient(180deg,#fff,#dcecf7); position:relative; }
+  .mini:disabled { opacity:.5; }
+  #unread { position:absolute; top:-6px; right:-6px; min-width:18px; height:18px; padding:0 5px; border-radius:9px; background:#e0302a; color:#fff; font:700 11px/18px "Segoe UI",sans-serif; font-style:normal; display:none; }
+  #pad.spec { color:var(--ink); font-size:20px; font-weight:800; }
+  #pad.wave { box-shadow:0 0 0 3px #ffb347,0 0 28px rgba(255,179,71,.8),inset 0 1px 0 #fff; }
+  /* the chat: an old-school chat room window (grey face, navy title bar, inset white transcript) */
+  #chat { position:fixed; left:0; right:0; top:16%; bottom:0; z-index:6; display:none; flex-direction:column; font-family:Tahoma,Verdana,Arial,sans-serif; background:#d4d0c8;
+    border-top:2px solid #fff; box-shadow:0 -8px 30px rgba(0,40,80,.4); touch-action:auto; user-select:text; -webkit-user-select:text; padding-bottom:env(safe-area-inset-bottom); }
+  #chat.on { display:flex; }
+  #chat .ttl { display:flex; align-items:center; justify-content:space-between; padding:6px 8px; color:#fff; font-weight:700; font-size:15px; background:linear-gradient(90deg,#0a246a,#3a6ea5 60%,#a6caf0); }
+  #chat .ttl button { font:700 14px Tahoma,sans-serif; width:26px; height:22px; padding:0; color:#000; background:#d4d0c8; border:2px outset #fff; }
+  #ppl { font-size:13px; padding:5px 8px 0; color:#000; line-height:1.9; }
+  #ppl button { font:700 12px Tahoma,sans-serif; padding:2px 7px; margin-left:4px; color:#000; background:#d4d0c8; border:2px outset #fff; border-radius:0; }
+  #clog { flex:1; overflow-y:auto; margin:6px; padding:6px 8px; background:#fff; border:2px inset #fff; font-size:15px; line-height:1.4; color:#000; word-wrap:break-word; }
+  #clog .sys { color:#000080; } #clog .sys b { color:#c00000; }
+  .chips { display:flex; gap:6px; flex-wrap:wrap; padding:0 6px; }
+  .chips button, #csend { font:700 14px Tahoma,sans-serif; padding:7px 10px; color:#000; background:#d4d0c8; border:2px outset #fff; border-radius:0; }
+  .chips button:active, #csend:active { border-style:inset; }
+  .crow { display:flex; gap:6px; padding:6px; }
+  #cin, #myname { flex:1; min-width:0; font:16px Tahoma,Arial,sans-serif; padding:8px; border:2px inset #fff; border-radius:0; outline:none; background:#fff; color:#000; }
 </style>
 </head>
 <body>
 <div class="screen on" id="join">
   <h1>Table Tennis</h1>
   <p>Your phone is the paddle. Hold it like a Wii Remote pointed at the screen and swing.</p>
+  <p id="linkinfo" style="font-size:14px"></p>
   <input type="text" id="name" maxlength="14" placeholder="Your name" autocomplete="off">
   <div><p style="margin-bottom:6px">Which hand holds the phone?</p>
     <div class="seg" id="handseg"><button data-h="1" class="on">Right</button><button data-h="-1">Left</button></div></div>
@@ -47,27 +81,39 @@
 </div>
 
 <div class="screen" id="play">
-  <div class="row" style="justify-content:space-between;align-items:center"><span id="pill">connecting</span><span id="seatlabel" style="color:var(--dim);font-weight:700"></span></div>
+  <div class="row" style="justify-content:space-between;align-items:center"><span id="pill">connecting</span><span id="linkbadge" class="mini" style="display:none;padding:4px 8px;font-size:12px"></span><span id="seatlabel" style="color:var(--dim);font-weight:700;flex:1;text-align:center"></span>
+    <button class="mini" id="rolebtn">Spectate</button><button class="mini" id="chatbtn">💬 Chat<i id="unread"></i></button></div>
   <div id="score"><div class="me" id="sc0"><small id="nm0"></small><b id="v0">0</b></div><span class="sep">:</span><div id="sc1"><small id="nm1"></small><b id="v1">0</b></div></div>
   <div id="status">Waiting...</div>
   <div id="fb"></div>
   <div id="meter"><i></i></div>
-  <div id="pad">Swing the phone!<br>(no motion sensor? swipe here: left/right = forehand/backhand, up = toss)</div>
+  <div id="pad"><span id="padtext">Swing the phone!<br>(no motion sensor? swipe here: left/right = forehand/backhand, up = toss)</span></div>
   <div class="row">
     <button class="big alt" id="recenter">Calibrate</button>
     <button class="big alt" id="toss">Toss</button>
     <button class="big alt" id="startbtn" style="display:none">Start</button>
+    <button class="big alt" id="pausebtn" style="display:none">⏸ Pause</button>
+    <button class="big" id="resumebtn" style="display:none">Resume</button>
+    <button class="big alt" id="endbtn" style="display:none">End game</button>
   </div>
   <div class="row" style="align-items:center;gap:12px"><span style="color:var(--dim);font-weight:700;font-size:14px">Sensitivity</span><input type="range" id="sens" min="0.5" max="1.6" step="0.05" value="1" style="flex:1"></div>
   <div class="row"><button class="big alt" id="flip" style="font-size:14px;padding:10px">Aim direction: flipped</button></div>
   <div class="row"><div class="seg" id="handseg2" style="flex:1"><button data-h="1" class="on">Right-hand</button><button data-h="-1">Left-hand</button></div></div>
 </div>
-<div class="screen" id="calib" style="background:#10243aee;z-index:5;justify-content:center;text-align:center">
+<div class="screen" id="calib">
   <h1 id="ctitle">Calibrate</h1>
   <p id="ctext" style="font-size:19px;color:var(--ink)"></p>
   <div id="cart" style="font-size:90px">📱</div>
   <button class="big" id="cnext">Aimed at the screen</button>
   <button class="big alt" id="cskip">Skip</button>
+</div>
+<div id="chat">
+  <div class="ttl"><span>Chat Room: Table Tennis</span><button id="cclose" aria-label="Close chat">×</button></div>
+  <div class="crow" style="padding-bottom:0;align-items:center"><span style="font-size:13px;color:#000">Your name</span><input type="text" id="myname" maxlength="14" placeholder="Guest" autocomplete="off" enterkeyhint="done"></div>
+  <div id="ppl"></div>
+  <div id="clog"></div>
+  <div class="chips" id="chips"><button>GG</button><button>Nice shot! 👏</button><button>lol</button><button>😮</button><button>Rematch?</button><button>👋</button></div>
+  <div class="crow"><input type="text" id="cin" maxlength="140" placeholder="Say something…" autocomplete="off" enterkeyhint="send"><button id="csend">Send</button></div>
 </div>
 <script src="/controller.js"></script>
 </body>

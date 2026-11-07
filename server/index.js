@@ -8,7 +8,7 @@ import { spawn } from 'node:child_process';
 import { WebSocketServer } from 'ws';
 import QRCode from 'qrcode';
 import { Game } from './sim.js';
-import { SwingDetector } from './swing.js';
+import { Room } from './room.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -38,8 +38,8 @@ const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
   let p = decodeURIComponent(url.pathname);
   if (p === '/api/info') {
-    const base = publicUrl || `http://localhost:${PORT}`;
-    const joinUrl = `${base}/pad`;
+    const base = publicUrl || `http://localhost:${PORT}`, screen = (url.searchParams.get('s') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8);
+    const joinUrl = `${base}/pad${screen ? '?s=' + screen : ''}`;   // each screen's QR carries its code, so a phone that scans it links to that screen
     const qr = await QRCode.toDataURL(joinUrl, { margin: 1, width: 280, color: { dark: '#10243a', light: '#ffffff' } });
     res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
     res.end(JSON.stringify({ publicUrl, joinUrl, qr, https: !!publicUrl }));
@@ -59,70 +59,43 @@ const server = http.createServer(async (req, res) => {
 
 // ---- WebSocket --------------------------------------------------------------------------------
 const wss = new WebSocketServer({ server, path: '/ws' });
-const hosts = new Set();
-const pads = new Map();      // ws -> {pid, seat, det, name}
-const seatOwner = [null, null];   // pid per seat
-
 function send(ws, obj) { if (ws.readyState === 1) ws.send(JSON.stringify(obj)); }
-function seatInfo(i) { const s = game.seats[i]; return { kind: s.kind, name: s.name, online: s.online, hand: s.hand }; }
-
-function assignSeat(pad) {
-  for (let i = 0; i < 2; i++) if (seatOwner[i] === pad.pid) return i;
-  // prefer an empty seat, then take over a CPU
-  for (let i = 0; i < 2; i++) if (game.seats[i].kind === 'empty') return claim(pad, i);
-  for (let i = 0; i < 2; i++) if (game.seats[i].kind === 'cpu') return claim(pad, i);
-  return -1;
-}
-function claim(pad, i) {
-  seatOwner[i] = pad.pid;
-  const s = game.seats[i];
-  s.kind = 'human'; s.name = pad.name || `Player ${i + 1}`; s.online = true; s.hand = pad.det.hand;
-  return i;
-}
-function releaseSeat(pad) {
-  const i = seatOwner.indexOf(pad.pid);
-  if (i < 0) return;
-  const s = game.seats[i];
-  s.online = false;
-  if (game.phase === 'lobby') { s.kind = 'empty'; s.name = ''; seatOwner[i] = null; }
-  else { s.kind = 'cpu'; s.name = s.name + ' (CPU)'; s.skill = 0.5; } // AI covers a dropped phone; same pid can reclaim
-}
+// seats, spectators, chat and spectators' hands live in the Room; here it only gets delivery
+const room = new Room(game, (to, msg) => {
+  const str = JSON.stringify(msg);
+  if (to === 'all' || to === 'hosts') for (const h of room.hosts) if (h.readyState === 1) h.send(str);
+  if (to === 'all') for (const w of room.pads.keys()) if (w.readyState === 1) w.send(str);
+  if (typeof to === 'object' && to.readyState === 1) to.send(str);
+});
 
 wss.on('connection', (ws) => {
   ws.on('message', (data) => {
     let m; try { m = JSON.parse(data); } catch { return; }
-    if (m.t === 'hello') {
-      if (m.role === 'host') { hosts.add(ws); ws.isHost = true; send(ws, { t: 'welcome' }); return; }
-      const pad = { pid: String(m.pid || Math.random()).slice(0, 40), name: String(m.name || '').slice(0, 14), seat: -1, det: new SwingDetector(), ws };
-      pad.det.hand = m.hand === -1 ? -1 : 1;
-      pads.set(ws, pad);
-      // if this pid already owns a seat (reconnect), reclaim it
-      const owned = seatOwner.indexOf(pad.pid);
-      if (owned >= 0) {
-        const s = game.seats[owned];
-        if (s.kind === 'cpu' || s.kind === 'human') { s.kind = 'human'; s.online = true; s.name = pad.name || s.name.replace(' (CPU)', ''); s.hand = pad.det.hand; }
-        pad.seat = owned;
-      } else pad.seat = assignSeat(pad);
-      send(ws, { t: 'seat', seat: pad.seat });
-      return;
-    }
+    if (m.t === 'hello') { room.hello(ws, m); return; }
+    if (m.t === 'chat') { room.chat(ws, m.text, m.name, Number(m.as) || 0); return; }   // phones and screens alike
+    if (m.t === 'pause') { room.pause(ws, m.name); return; }                  // only the players may (Room checks); anyone may kick
+    if (m.t === 'resume') { room.resume(ws); return; }
+    if (m.t === 'end') { if (game.phase !== 'lobby' && room.end(ws, m.name)) resetToLobby(); return; }
+    if (m.t === 'kick') { room.kick(ws, Number(m.seat), m.name); return; }
+    if (room.paused && ['m', 'swing', 'toss', 'kswing', 'ktoss'].includes(m.t) && room.pads.get(ws)?.seat !== -1) return;   // no swings while paused (spectators still wave)
     if (ws.isHost) {
       if (m.t === 'start') startFrom(m);
-      else if (m.t === 'kbdjoin') {
-        for (let i = 0; i < 2; i++) if (game.seats[i].kind === 'empty') { game.seats[i].kind = 'human'; game.seats[i].name = 'Keyboard'; game.seats[i].online = true; ws.kbdSeat = i; seatOwner[i] = 'kbd'; break; }
-      } else if (m.t === 'kbdleave' && ws.kbdSeat !== undefined) {
-        const i = ws.kbdSeat; game.seats[i].online = false; if (game.phase === 'lobby') { game.seats[i].kind = 'empty'; game.seats[i].name = ''; } else { game.seats[i].kind = 'cpu'; }
-        seatOwner[i] = null; ws.kbdSeat = undefined;
-      } else if (m.t === 'kswing' && ws.kbdSeat !== undefined) game.registerSwing(ws.kbdSeat, m);
+      else if (m.t === 'name') room.renameFrom(ws, Number(m.sid), m.name);        // a screen renames a phone linked to it
+      else if (m.t === 'kbdjoin') room.kbdJoin(ws);
+      else if (m.t === 'kbdleave') room.kbdLeave(ws);
+      else if (m.t === 'kswing' && ws.kbdSeat !== undefined) game.registerSwing(ws.kbdSeat, m);
       else if (m.t === 'ktoss' && ws.kbdSeat !== undefined) game.toss(ws.kbdSeat);
-      else if (m.t === 'reset') resetToLobby();
       return;
     }
-    const pad = pads.get(ws);
+    const pad = room.pads.get(ws);
     if (!pad) return;
     if (m.t === 'm') {
-      if (pad.seat < 0) return;
+      if (pad.seat < 0) { room.motion(pad, m); return; }               // a spectator's phone moves their hand on the sideline
       pad.lastM = Date.now();
+      // phone clock -> server clock: the smallest (arrival - phone timestamp) seen is the clock offset plus the fastest trip.
+      // It creeps up 0.6 ms/s so a slower route (tunnel reconnect) is picked up.
+      const d = performance.now() - m.ts;
+      if (Number.isFinite(d)) pad.minDelta = Math.min(d, (pad.minDelta ?? d) + 0.01);
       if (Array.isArray(m.yv) && Array.isArray(m.zv)) { const s = game.seats[pad.seat]; s.tilt = { y: m.yv, z: m.zv }; s.tiltT = game.t; }
       const mode = (game.phase === 'serve' && game.server === pad.seat && game.serveStage === 'hold') ? 'toss' : 'swing';
       const r = pad.det.push(m, mode);
@@ -138,23 +111,28 @@ wss.on('connection', (ws) => {
       if (pad.seat >= 0) game.seats[pad.seat].hand = pad.det.hand;
     } else if (m.t === 'start') {
       if (pad.seat >= 0) startFrom(m);
-    } else if (m.t === 'ping') send(ws, { t: 'pong', c: m.c });
+    } else if (m.t === 'role') room.setRole(pad, !!m.play);              // play <-> spectate without disconnecting
+    else if (m.t === 'name') room.rename(pad, m.name);
+    else if (m.t === 'wave') room.wave(pad);
+    else if (m.t === 'ping') send(ws, { t: 'pong', c: m.c });
   });
-  ws.on('close', () => {
-    hosts.delete(ws);
-    if (ws.kbdSeat !== undefined) { const s = game.seats[ws.kbdSeat]; s.online = false; if (game.phase === 'lobby') { s.kind = 'empty'; s.name = ''; } else s.kind = 'cpu'; seatOwner[ws.kbdSeat] = null; }
-    const pad = pads.get(ws);
-    if (pad) { pads.delete(ws); releaseSeat(pad); }
-  });
+  ws.on('close', () => room.bye(ws));
 });
 
 function handleAction(pad, r) {
   if (r.kind === 'toss') game.toss(pad.seat);
   else if (r.kind === 'swing') {
     // a swing also works as a toss request if the ball is still in hand and it was a big upward flick: handled in detector
-    game.registerSwing(pad.seat, r);
+    game.registerSwing(pad.seat, { ...r, ago: swingAgo(pad, r) });
     send(pad.ws, { t: 'swung', power: r.power, side: r.side, spin: r.spin, aim: r.aim });
   }
+}
+// Seconds between the swing's peak on the phone and the simulation's current time, for lag compensation (Game.registerSwing).
+// Uses the phone's own timestamp of the peak mapped through the best-case clock offset, so network jitter drops out.
+function swingAgo(pad, r) {
+  if (pad.minDelta === undefined || !Number.isFinite(r.peakTs)) return undefined;
+  const wallAgo = (performance.now() - (r.peakTs + pad.minDelta)) / 1000;
+  return wallAgo - (acc + Number(process.hrtime.bigint() - last) / 1e9);   // minus wall time the simulation has not stepped through yet
 }
 
 function startFrom(m) {
@@ -162,31 +140,34 @@ function startFrom(m) {
   game.startMatch({ skill: Number(m.skill ?? 0.6), pointsToWin: Number(m.toWin) === 7 ? 7 : 11 });
 }
 function resetToLobby() {
-  game.phase = 'lobby'; game.message = 'Waiting for players'; game.score = [0, 0]; game.winner = -1;
+  room.paused = null; game.phase = 'lobby'; game.message = 'Waiting for players'; game.score = [0, 0]; game.winner = -1;
   for (let i = 0; i < 2; i++) { const s = game.seats[i]; if (s.kind === 'cpu') { s.kind = 'empty'; s.name = ''; } }
   game.parkBall();
 }
 
 // ---- game loop --------------------------------------------------------------------------------
 const DT = 1 / 60;
-let acc = 0, last = process.hrtime.bigint();
+let acc = 0, last = process.hrtime.bigint(), netT = 0;   // netT: the screens' clock, which keeps running while the game is paused
 let padTick = 0;
 setInterval(() => {
   const now = process.hrtime.bigint();
   acc += Number(now - last) / 1e9; last = now;
   if (acc > 0.25) acc = 0.25;
   while (acc >= DT) {
-    game.step(DT); acc -= DT;
-    const snap = game.snapshot();
+    if (!room.tickPause(Date.now())) game.step(DT);   // paused: the world holds still, screens keep drawing it
+    acc -= DT; netT += DT;
+    const snap = game.snapshot(); snap.time = netT; snap.pause = room.pauseInfo();
     const evPads = snap.ev.filter((e) => e.type === 'feedback');
-    if (hosts.size) {
+    if (room.hosts.size) {
       const str = JSON.stringify({ ...snap, t: 's' });
-      for (const h of hosts) if (h.readyState === 1) h.send(str);
+      for (const h of room.hosts) if (h.readyState === 1) h.send(str);
     }
-    for (const e of evPads) for (const [ws, pad] of pads) if (pad.seat === e.seat) send(ws, { ...e, t: 'fb' });
-    if (++padTick % 6 === 0) {
-      const st = { t: 'st', phase: snap.phase, msg: snap.msg, score: snap.score, server: snap.server, serveStage: snap.serveStage, seats: game.seats.map((s) => ({ kind: s.kind, name: s.name, online: s.online })), win: snap.win };
-      for (const [ws, pad] of pads) send(ws, { ...st, seat: pad.seat });
+    for (const e of evPads) for (const [ws, pad] of room.pads) if (pad.seat === e.seat) send(ws, { ...e, t: 'fb' });
+    if (++padTick % 4 === 0) room.arms();
+    if (padTick % 6 === 0) {
+      const st = { t: 'st', phase: snap.phase, msg: snap.msg, score: snap.score, server: snap.server, serveStage: snap.serveStage, pause: snap.pause, seats: game.seats.map((s) => ({ kind: s.kind, name: s.name, online: s.online })), win: snap.win };
+      for (const [ws, pad] of room.pads) send(ws, { ...st, seat: pad.seat });
+      room.syncRoster();
     }
   }
 }, 8);
@@ -201,7 +182,7 @@ function startTunnel() {
   } catch (e) { console.log('[tunnel] could not start cloudflared:', e.message); return; }
   const onData = (d) => {
     const s = d.toString();
-    const mt = s.match(/https:\/\/[a-z0-9-]+\.trycloudflare\.com/);
+    const mt = s.match(/https:\/\/(?!api\.)[a-z0-9-]+\.trycloudflare\.com/);   // cloudflared's error lines name https://api.trycloudflare.com: not the tunnel
     if (mt && publicUrl !== mt[0]) {
       publicUrl = mt[0];
       console.log('\n=====================================================');
@@ -215,7 +196,11 @@ function startTunnel() {
   tunnelProc.stdout.on('data', onData);
   tunnelProc.stderr.on('data', onData);
   tunnelProc.on('error', (e) => console.log('[tunnel] failed:', e.message, '- install cloudflared or set CLOUDFLARED=path'));
-  tunnelProc.on('exit', (c) => { console.log('[tunnel] exited', c); tunnelProc = null; });
+  tunnelProc.on('exit', (c) => {
+    console.log('[tunnel] exited', c); tunnelProc = null;
+    if (!process.env.PUBLIC_URL) publicUrl = null;      // stop advertising a dead link
+    if (c === 1) setTimeout(startTunnel, 5000);          // cloudflared gave up (e.g. a network blip creating the tunnel): try again
+  });
 }
 for (const sig of ['SIGINT', 'SIGTERM', 'exit']) process.on(sig, () => { if (tunnelProc) tunnelProc.kill(); if (sig !== 'exit') process.exit(0); });
 
